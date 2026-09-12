@@ -38,12 +38,22 @@ export const siteConfig = {
   },
 
   nav: [
-    { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Industries", href: "/industries" },
     { label: "Work", href: "/work" },
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
+    { label: "Pricing", href: "/pricing" },
   ] satisfies NavLink[],
+
+  hero: {
+    eyebrow: "Digital product studio",
+    headline: "Build Digital Experiences That Grow Your Business.",
+    supporting:
+      "Websites, business applications and AI-powered automation designed to help businesses attract customers, streamline operations and grow.",
+    primaryCta: { label: "Start a Project", href: "/contact" },
+    secondaryCta: { label: "Explore Our Work", href: "/work" },
+  },
 
   socials: [
     { label: "LinkedIn", href: "https://linkedin.com/company/your-brand", icon: "Linkedin" },

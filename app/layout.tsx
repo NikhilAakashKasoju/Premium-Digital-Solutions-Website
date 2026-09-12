@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { MotionConfig } from "framer-motion";
 
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/layout/navbar";
@@ -35,9 +36,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-brand text-brand-foreground">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {/* reducedMotion="user" makes every Framer Motion animation in the
+            app honor the OS-level prefers-reduced-motion setting. */}
+        <MotionConfig reducedMotion="user">
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </MotionConfig>
       </body>
     </html>
   );

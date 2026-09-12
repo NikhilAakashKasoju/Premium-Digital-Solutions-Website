@@ -21,6 +21,10 @@ export function NavLinks({ className, "aria-label": ariaLabel }: NavLinksProps) 
         <Link
           key={item.href}
           href={item.href}
+          // These routes don't exist yet (later phases build them out), so
+          // don't let Next.js prefetch them — that just spams 404s in the
+          // console every time a link scrolls into view.
+          prefetch={false}
           className="text-sm text-brand-muted transition-colors hover:text-brand-foreground"
         >
           {item.label}
