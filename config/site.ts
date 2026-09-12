@@ -91,7 +91,13 @@ export const siteConfig = {
   tagline: "Think. Build. Evolve.",
   description:
     "Premium digital solutions for businesses that need to move fast: websites, e-commerce, custom web applications, and AI-powered automation, built to a production-grade standard.",
-  url: "https://example.com",
+  // Used as the base for canonical URLs, OG/Twitter image URLs, and
+  // sitemap.xml/robots.txt. `NEXT_PUBLIC_SITE_URL` is the one to set
+  // once a custom domain is attached; `RENDER_EXTERNAL_URL` is set
+  // automatically by Render on every web service, so a fresh Render
+  // deploy gets correct metadata with no manual step. Falls back to
+  // this placeholder for local dev and any other host.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? process.env.RENDER_EXTERNAL_URL ?? "https://example.com",
 
   contact: {
     email: "hello@example.com",

@@ -1,0 +1,23 @@
+# Render Blueprint for this Next.js site.
+#
+# Lets Render auto-configure the web service from this file instead of
+# clicking through the dashboard: in the Render dashboard, choose
+# "New +" -> "Blueprint", point it at this repo, and Render reads this
+# file. (You can still create the service manually instead — see the
+# deployment notes shared alongside this file for that path.)
+#
+# `npm ci` (not `npm install`) is used for the build so Render installs
+# the exact versions locked in package-lock.json, matching what was
+# tested locally.
+services:
+  - type: web
+    name: nikhil-website
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.1
+      - key: NODE_ENV
+        value: production
