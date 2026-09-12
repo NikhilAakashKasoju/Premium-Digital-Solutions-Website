@@ -53,7 +53,11 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
 
     case "grid":
       return (
-        <div className="grid grid-cols-2 gap-3">
+        // `relative` here (not just on the outer WindowFrame) scopes the
+        // floating cart badge to this grid's own top-right corner —
+        // without it the badge positions against WindowFrame's chrome
+        // instead and overlaps the title bar.
+        <div className="relative grid grid-cols-2 gap-3">
           {preview.items.map((item) => (
             <div key={item.label} className="rounded-lg border border-brand-border p-2.5">
               <div className="aspect-square rounded-md bg-brand-border/60" />
@@ -61,7 +65,7 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
               <p className="text-xs font-medium text-brand-accent-2">{item.price}</p>
             </div>
           ))}
-          <span className="pointer-events-none absolute right-6 top-6 flex size-8 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent-2 md:right-8 md:top-8">
+          <span className="pointer-events-none absolute right-0 top-0 flex size-8 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent-2">
             <ShoppingCart className="size-4" aria-hidden />
           </span>
         </div>

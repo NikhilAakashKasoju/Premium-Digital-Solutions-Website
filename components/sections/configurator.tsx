@@ -53,7 +53,7 @@ export function Configurator() {
   const selectedOption = CONFIGURATOR_OPTIONS.find((option) => option.id === selectedId) ?? CONFIGURATOR_OPTIONS[0];
 
   return (
-    <Section>
+    <Section id="solutions">
       <Container>
         <SectionHeading
           title="What Can We Build For You?"

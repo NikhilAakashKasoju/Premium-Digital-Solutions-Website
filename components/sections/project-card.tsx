@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import type { PortfolioProject } from "@/config/portfolio";
+import { cardSurfaceClass, cn, FOCUS_RING } from "@/lib/utils";
 import { ProjectPreview } from "@/components/sections/project-preview";
 
 /**
@@ -12,7 +13,12 @@ import { ProjectPreview } from "@/components/sections/project-preview";
  */
 export function ProjectCard({ project }: { project: PortfolioProject }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-brand-border bg-brand-secondary/60 transition-all duration-300 hover:-translate-y-1 hover:border-brand-muted hover:shadow-[0_16px_40px_-24px_rgba(0,0,0,0.6)]">
+    <article
+      className={cn(
+        cardSurfaceClass,
+        "group flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-brand-muted hover:shadow-[0_16px_40px_-24px_rgba(0,0,0,0.6)]",
+      )}
+    >
       <div className="p-4 pb-0 sm:p-5 sm:pb-0">
         <ProjectPreview project={project} />
       </div>
@@ -44,7 +50,10 @@ export function ProjectCard({ project }: { project: PortfolioProject }) {
         <Link
           href={project.cta.href}
           prefetch={false}
-          className="group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
+          className={cn(
+            "group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80",
+            FOCUS_RING,
+          )}
         >
           {project.cta.label}
           <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-0.5" aria-hidden />

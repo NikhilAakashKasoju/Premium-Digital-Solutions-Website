@@ -5,6 +5,7 @@ import { Code2, PenTool, Rocket, Search, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type ProcessStage } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
@@ -19,15 +20,7 @@ const stageIcons: Record<ProcessStage["icon"], LucideIcon> = {
   Rocket,
 };
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
-};
-
-const stageItem: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const container = staggerContainer(0.15);
 
 const lineDesktop: Variants = {
   hidden: { scaleX: 0 },
@@ -99,7 +92,7 @@ function StageNode({ stage, horizontal = false }: { stage: ProcessStage; horizon
 
   return (
     <motion.div
-      variants={stageItem}
+      variants={fadeUpItem}
       className={cn("relative flex", horizontal ? "items-start gap-4" : "flex-col items-start")}
     >
       <span className="relative z-10 flex size-12 shrink-0 items-center justify-center rounded-full border border-brand-border bg-brand-secondary text-brand-accent-2">

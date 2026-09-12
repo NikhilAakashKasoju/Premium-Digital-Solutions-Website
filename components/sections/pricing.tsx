@@ -1,25 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 import { siteConfig, type PricingPlan } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const card: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const container = staggerContainer(0.1);
 
 /**
  * "Pricing" plan grid. Every figure comes from `siteConfig.pricing`
@@ -55,7 +48,7 @@ export function Pricing() {
 function PricingCard({ plan }: { plan: PricingPlan }) {
   return (
     <motion.div
-      variants={card}
+      variants={fadeUpItem}
       className={cn(
         "relative flex flex-col rounded-xl border p-6 lg:p-8",
         plan.featured

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
+import { cn, FOCUS_RING } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { NavLinks } from "@/components/layout/nav-links";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -70,7 +70,7 @@ export function Navbar() {
       <Container className="flex h-16 items-center justify-between lg:h-20">
         <Link
           href="/"
-          className="rounded-sm text-base font-semibold tracking-tight text-brand-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent lg:text-lg"
+          className={cn("rounded-sm text-base font-semibold tracking-tight text-brand-foreground lg:text-lg", FOCUS_RING)}
         >
           {siteConfig.name}
         </Link>
@@ -92,7 +92,7 @@ export function Navbar() {
             aria-controls={menuId}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((value) => !value)}
-            className="inline-flex items-center justify-center rounded-md p-2 text-brand-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 lg:hidden"
+            className={cn("inline-flex items-center justify-center rounded-md p-2 text-brand-foreground lg:hidden", FOCUS_RING)}
           >
             {menuOpen ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
           </button>

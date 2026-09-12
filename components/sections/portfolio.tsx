@@ -1,22 +1,15 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { PORTFOLIO_PROJECTS } from "@/config/portfolio";
+import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { ProjectCard } from "@/components/sections/project-card";
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const card: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const container = staggerContainer(0.1);
 
 export function Portfolio() {
   return (
@@ -35,7 +28,7 @@ export function Portfolio() {
           className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
         >
           {PORTFOLIO_PROJECTS.map((project) => (
-            <motion.div key={project.slug} variants={card}>
+            <motion.div key={project.slug} variants={fadeUpItem}>
               <ProjectCard project={project} />
             </motion.div>
           ))}

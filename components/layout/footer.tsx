@@ -2,6 +2,7 @@ import type { ComponentType, SVGProps } from "react";
 import Link from "next/link";
 
 import { siteConfig, type SocialLink } from "@/config/site";
+import { cn, FOCUS_RING_ON_SECONDARY } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { NavLinks } from "@/components/layout/nav-links";
 import { InstagramIcon, LinkedinIcon, YoutubeIcon } from "@/components/icons/brand-icons";
@@ -16,8 +17,9 @@ const socialIcons: Record<SocialLink["icon"], ComponentType<SVGProps<SVGSVGEleme
   Youtube: YoutubeIcon,
 };
 
-const focusRingClass =
-  "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-secondary";
+// The footer sits on `bg-brand-secondary`, so its focus rings need the
+// offset variant that matches that background (see lib/utils.ts).
+const focusRingClass = cn("rounded-sm", FOCUS_RING_ON_SECONDARY);
 
 export function Footer() {
   const year = new Date().getFullYear();

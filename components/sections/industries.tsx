@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Briefcase,
   Building2,
@@ -14,10 +14,13 @@ import {
 } from "lucide-react";
 
 import { siteConfig, type Industry } from "@/config/site";
+import { cardSurfaceClass, cn } from "@/lib/utils";
+import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { ArrowLink } from "@/components/ui/arrow-link";
+import { IconBadge } from "@/components/ui/icon-badge";
 
 // Keyed by the exact icon-name union (not `string`) so this object only
 // type-checks if every icon `Industry` can name has an entry — no
@@ -33,15 +36,7 @@ const industryIcons: Record<Industry["icon"], LucideIcon> = {
   MapPin,
 };
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const card: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const container = staggerContainer(0.08);
 
 /**
  * "Built for Different Businesses" industry grid. Each card links to
@@ -51,7 +46,7 @@ const card: Variants = {
  */
 export function Industries() {
   return (
-    <Section>
+    <Section id="industries">
       <Container>
         <SectionHeading
           title="Built for Different Businesses"
@@ -70,12 +65,10 @@ export function Industries() {
             return (
               <motion.div
                 key={industry.slug}
-                variants={card}
-                className="flex flex-col rounded-xl border border-brand-border bg-brand-secondary/60 p-6 transition-colors hover:border-brand-muted"
+                variants={fadeUpItem}
+                className={cn(cardSurfaceClass, "flex flex-col p-6 transition-colors hover:border-brand-muted")}
               >
-                <span className="flex size-11 items-center justify-center rounded-lg bg-brand-accent/15 text-brand-accent-2">
-                  <Icon className="size-5" aria-hidden />
-                </span>
+                <IconBadge icon={Icon} />
 
                 <h3 className="mt-5 text-h4 font-semibold text-brand-foreground">{industry.title}</h3>
                 <p className="mt-2 text-sm text-brand-muted">{industry.description}</p>

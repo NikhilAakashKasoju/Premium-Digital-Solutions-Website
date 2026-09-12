@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { siteConfig, type NavLink } from "@/config/site";
+import { cn, FOCUS_RING } from "@/lib/utils";
 
 type NavLinksProps = {
   className?: string;
@@ -28,7 +29,7 @@ export function NavLinks({ className, "aria-label": ariaLabel, items = siteConfi
           // be prefetched — that just spams 404s in the console every time
           // a link scrolls into view. Harmless for the real "#anchor" links too.
           prefetch={false}
-          className="rounded-sm text-sm text-brand-muted transition-colors hover:text-brand-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
+          className={cn("rounded-sm text-sm text-brand-muted transition-colors hover:text-brand-foreground", FOCUS_RING)}
         >
           {item.label}
         </Link>

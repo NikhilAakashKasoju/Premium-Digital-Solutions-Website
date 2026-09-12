@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, FOCUS_RING } from "@/lib/utils";
 
 export type AccordionItem = {
   question: string;
@@ -47,7 +47,10 @@ export function Accordion({ items, className }: { items: readonly AccordionItem[
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpenIndex(isOpen ? null : index)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-sm font-medium text-brand-foreground transition-colors hover:text-brand-accent-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand sm:px-6 sm:text-base"
+                className={cn(
+                  "flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-sm font-medium text-brand-foreground transition-colors hover:text-brand-accent-2 sm:px-6 sm:text-base",
+                  FOCUS_RING,
+                )}
               >
                 <span>{item.question}</span>
                 <ChevronDown

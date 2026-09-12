@@ -1,13 +1,16 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { AppWindow, Bot, Building2, Check, Globe, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type WhatWeBuildCard } from "@/config/site";
+import { cardSurfaceClass, cn } from "@/lib/utils";
+import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { ArrowLink } from "@/components/ui/arrow-link";
+import { IconBadge } from "@/components/ui/icon-badge";
 
 // Keyed by the exact icon-name union (not `string`) so this object only
 // type-checks if every icon `WhatWeBuildCard` can name has an entry — no
@@ -19,15 +22,7 @@ const cardIcons: Record<WhatWeBuildCard["icon"], LucideIcon> = {
   Bot,
 };
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const card: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const container = staggerContainer(0.1);
 
 export function WhatWeBuild() {
   return (
@@ -50,12 +45,10 @@ export function WhatWeBuild() {
             return (
               <motion.article
                 key={item.slug}
-                variants={card}
-                className="flex flex-col rounded-xl border border-brand-border bg-brand-secondary/60 p-6 transition-colors hover:border-brand-muted lg:p-8"
+                variants={fadeUpItem}
+                className={cn(cardSurfaceClass, "flex flex-col p-6 transition-colors hover:border-brand-muted lg:p-8")}
               >
-                <span className="flex size-11 items-center justify-center rounded-lg bg-brand-accent/15 text-brand-accent-2">
-                  <Icon className="size-5" aria-hidden />
-                </span>
+                <IconBadge icon={Icon} />
 
                 <h3 className="mt-5 text-h4 font-semibold text-brand-foreground">{item.title}</h3>
                 <p className="mt-2 text-sm text-brand-muted">{item.description}</p>

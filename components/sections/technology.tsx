@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { cardSurfaceClass, cn } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
@@ -20,7 +21,7 @@ export function Technology() {
 
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
           {siteConfig.technology.map((category) => (
-            <div key={category.label} className="rounded-xl border border-brand-border bg-brand-secondary/60 p-5">
+            <div key={category.label} className={cn(cardSurfaceClass, "p-5")}>
               <h3 className="text-xs font-semibold tracking-wide text-brand-accent-2 uppercase">
                 {category.label}
               </h3>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { AlertCircle, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
 
 import { BUDGET_OPTIONS, EMPTY_LEAD, PROJECT_NEED_OPTIONS, type LeadPayload } from "@/config/contact";
 import { submitLead } from "@/lib/submit-lead";
-import { cn } from "@/lib/utils";
+import { cn, FOCUS_RING } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
@@ -53,6 +53,19 @@ export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const formId = useId();
+  const successHeadingRef = useRef<HTMLHeadingElement>(null);
+
+  // The success view replaces the whole form (including the submit
+  // button the user had focus on) rather than updating in place, so
+  // without this the browser would drop focus back to <body> and a
+  // keyboard/screen-reader user would get no indication anything
+  // happened. Moves focus to the confirmation heading instead — same
+  // tabIndex={-1}-target pattern as the skip link in app/layout.tsx.
+  useEffect(() => {
+    if (status === "success") {
+      successHeadingRef.current?.focus();
+    }
+  }, [status]);
 
   function updateField<K extends keyof LeadPayload>(field: K, value: LeadPayload[K]) {
     setValues((prev) => ({ ...prev, [field]: value }));
@@ -99,14 +112,23 @@ export function Contact() {
             <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-accent-2/15 text-brand-accent-2">
               <CheckCircle2 className="size-6" aria-hidden />
             </span>
-            <h2 className="mt-6 text-h3 font-semibold text-brand-foreground">Message Received</h2>
+            <h2
+              ref={successHeadingRef}
+              tabIndex={-1}
+              className="mt-6 text-h3 font-semibold text-brand-foreground focus:outline-none"
+            >
+              Message Received
+            </h2>
             <p className="mt-3 text-sm text-brand-muted">
               Thanks for reaching out — we typically reply within one business day.
             </p>
             <button
               type="button"
               onClick={resetForm}
-              className="mt-6 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
+              className={cn(
+                "mt-6 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80",
+                FOCUS_RING,
+              )}
             >
               Send another message
             </button>

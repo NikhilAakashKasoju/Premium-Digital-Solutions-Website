@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { siteConfig, type NavLink } from "@/config/site";
-import { cn } from "@/lib/utils";
+import { cn, FOCUS_RING } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 const panelVariants = {
@@ -52,7 +52,10 @@ export function MobileNav({ id, open, nav, onNavigate }: MobileNavProps) {
                   href={item.href}
                   onClick={onNavigate}
                   prefetch={false}
-                  className="block rounded-md px-3 py-3 text-base text-brand-muted transition-colors hover:bg-brand-secondary hover:text-brand-foreground"
+                  className={cn(
+                    "block rounded-md px-3 py-3 text-base text-brand-muted transition-colors hover:bg-brand-secondary hover:text-brand-foreground",
+                    FOCUS_RING,
+                  )}
                 >
                   {item.label}
                 </Link>

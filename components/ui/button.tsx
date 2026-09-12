@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn, FOCUS_RING } from "@/lib/utils";
 
 /**
  * Shared button/CTA styling, as a shadcn-style `cva` variant map.
@@ -13,11 +13,14 @@ import { cn } from "@/lib/utils";
  * each re-typing the same Tailwind classes with small drifts.
  */
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand disabled:pointer-events-none disabled:opacity-50",
+  cn(
+    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+    FOCUS_RING,
+  ),
   {
     variants: {
       variant: {
-        primary: "bg-brand-accent text-brand-foreground hover:opacity-90",
+        primary: "bg-brand-accent-button text-brand-foreground hover:opacity-90",
         outline: "border border-brand-border text-brand-foreground hover:border-brand-muted",
       },
       size: {

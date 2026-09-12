@@ -98,27 +98,33 @@ export const siteConfig = {
     phone: "+91 00000 00000",
   },
 
-  // Routes marked "real" below anchor to a section that already exists
-  // on this single page (id="services"/"work"/"pricing"/"contact"); the
-  // rest are honest placeholders for pages this site doesn't have yet
-  // (Solutions, Industries, About). Keep that split in sync with the
-  // actual section ids in app/page.tsx as real pages get built.
+  // Every nav item below anchors to a section that already exists on
+  // this single page: Services -> id="services" (What We Build),
+  // Solutions -> id="solutions" (the "What Can We Build For You?"
+  // configurator), Industries -> id="industries", Work -> id="work",
+  // About -> id="about" (Why Choose Us — the closest thing this
+  // single-page site has to an About section today), Pricing ->
+  // id="pricing". "Solutions" and "About" don't have dedicated pages
+  // of their own yet, so they point at the nearest existing section
+  // rather than 404ing — repoint them at real standalone pages if
+  // those get built later. Keep this in sync with the actual section
+  // ids in app/page.tsx.
   nav: [
     { label: "Services", href: "#services" },
-    { label: "Solutions", href: "/solutions" },
-    { label: "Industries", href: "/industries" },
+    { label: "Solutions", href: "#solutions" },
+    { label: "Industries", href: "#industries" },
     { label: "Work", href: "#work" },
-    { label: "About", href: "/about" },
+    { label: "About", href: "#about" },
     { label: "Pricing", href: "#pricing" },
   ] satisfies NavLink[],
 
-  /** Footer navigation column — a distinct list from `nav` (swaps Pricing for Contact per the footer spec), same real-vs-placeholder split. */
+  /** Footer navigation column — a distinct list from `nav` (swaps Pricing for Contact per the footer spec), same anchors. */
   footerNav: [
     { label: "Services", href: "#services" },
-    { label: "Solutions", href: "/solutions" },
-    { label: "Industries", href: "/industries" },
+    { label: "Solutions", href: "#solutions" },
+    { label: "Industries", href: "#industries" },
     { label: "Work", href: "#work" },
-    { label: "About", href: "/about" },
+    { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" },
   ] satisfies NavLink[],
 
