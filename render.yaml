@@ -9,15 +9,24 @@
 # `npm ci` (not `npm install`) is used for the build so Render installs
 # the exact versions locked in package-lock.json, matching what was
 # tested locally.
+#
+# IMPORTANT: do NOT set NODE_ENV=production as a service env var here.
+# Next.js's own `next build`/`next start` already run in production mode
+# on their own — they don't need it set externally. Setting it anyway
+# makes `npm ci` silently skip devDependencies (that's an npm behavior,
+# not a Next.js one), and this project's PostCSS/Tailwind build plugin
+# (`@tailwindcss/postcss`) lives in devDependencies like any other build
+# tool. Losing it mid-install breaks the build with
+# "Cannot find module '@tailwindcss/postcss'". `--include=dev` below is
+# a second safety net so the build still works even if NODE_ENV=production
+# ends up set some other way (e.g. an env var group in the Render dashboard).
 services:
   - type: web
     name: nikhil-website
     runtime: node
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
         value: 20.18.1
-      - key: NODE_ENV
-        value: production
