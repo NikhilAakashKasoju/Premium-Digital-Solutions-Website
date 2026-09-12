@@ -49,6 +49,25 @@ export type TechCategory = {
   items: readonly string[];
 };
 
+export type PricingPlan = {
+  slug: "starter" | "business" | "custom";
+  name: string;
+  tagline: string;
+  /** A fixed starting figure (e.g. "₹49,999"). Omit for a plan priced
+   *  only after scoping — the card then shows "Custom pricing"
+   *  instead of "Starting from …", per `priceNote`. */
+  startingPrice?: string;
+  priceNote: string;
+  featured?: boolean;
+  features: readonly string[];
+  cta: { label: string; href: string };
+};
+
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
 export type Industry = {
   /** Used to derive both the CTA href (`/industries/{slug}`) and a future landing-page route. */
   slug: string;
@@ -309,6 +328,120 @@ export const siteConfig = {
     { label: "Cloud", items: ["Vercel", "AWS", "Azure"] },
     { label: "AI", items: ["OpenAI", "AI Agents", "RAG", "Automation"] },
   ] satisfies TechCategory[],
+
+  /**
+   * "Pricing" plan cards. Every price is a `startingPrice` here — never
+   * a hard-coded final quote in the component — so it can be revised
+   * without touching any markup. `custom` has no `startingPrice` at
+   * all: a fully bespoke build only ever gets "Custom pricing".
+   */
+  pricing: [
+    {
+      slug: "starter",
+      name: "Starter",
+      tagline: "Professional digital presence.",
+      startingPrice: "₹49,999",
+      priceNote: "one-time, per project",
+      features: [
+        "Responsive website",
+        "Up to 7 pages",
+        "Contact form",
+        "Basic SEO",
+        "Analytics",
+        "Deployment",
+      ],
+      cta: { label: "Get Started", href: "#contact" },
+    },
+    {
+      slug: "business",
+      name: "Business",
+      tagline: "Turn your website into a business platform.",
+      startingPrice: "₹1,49,999",
+      priceNote: "one-time, per project",
+      featured: true,
+      features: [
+        "Everything in Starter",
+        "CMS",
+        "Database",
+        "Lead management",
+        "Integrations",
+        "Advanced SEO",
+        "Admin dashboard",
+      ],
+      cta: { label: "Get Started", href: "#contact" },
+    },
+    {
+      slug: "custom",
+      name: "Custom",
+      tagline: "Build software around your workflow.",
+      priceNote: "Scoped together on a discovery call",
+      features: [
+        "Custom web applications",
+        "Database",
+        "Authentication",
+        "Payments",
+        "Dashboards",
+        "APIs",
+        "AI",
+        "Automation",
+      ],
+      cta: { label: "Talk to Us", href: "#contact" },
+    },
+  ] satisfies PricingPlan[],
+
+  /** "Frequently Asked Questions" — kept to what a prospective client actually asks before starting. */
+  faq: [
+    {
+      question: "How long does a website take?",
+      answer:
+        "A marketing website typically takes 2–4 weeks from kickoff to launch. A web application or custom platform usually takes 6–12 weeks, depending on scope.",
+    },
+    {
+      question: "Do you build custom websites?",
+      answer:
+        "Yes — every site is built from scratch around your brand and goals, not assembled from a generic template.",
+    },
+    {
+      question: "Can you integrate databases?",
+      answer:
+        "Yes. We work with PostgreSQL, Supabase and other databases to power CMS content, customer records, bookings and more.",
+    },
+    {
+      question: "Can you build e-commerce websites?",
+      answer:
+        "Yes, from a simple storefront to a full catalog-and-checkout experience integrated with payment providers and inventory.",
+    },
+    {
+      question: "Can you build dashboards?",
+      answer:
+        "Yes — internal admin dashboards, customer-facing reporting views and analytics dashboards are all part of what we build.",
+    },
+    {
+      question: "Can you integrate AI?",
+      answer:
+        "Yes. We build AI chat assistants, lead-qualification bots and automation that connects to the tools you already use.",
+    },
+    {
+      question: "Do you provide hosting?",
+      answer:
+        "We deploy to modern cloud platforms like Vercel, AWS and Azure, and can manage hosting for you or hand it off to your team.",
+    },
+    {
+      question: "Do you provide maintenance?",
+      answer:
+        "Yes — ongoing maintenance, monitoring and feature updates are available after launch as part of an optional support plan.",
+    },
+    {
+      question: "Can you redesign an existing website?",
+      answer:
+        "Yes. We can rebuild an existing site with modern design and better performance, keeping the same or improved content.",
+    },
+    {
+      question: "Can you work with international clients?",
+      answer:
+        "Yes — we work with clients across time zones and collaborate remotely through calls, async updates and shared project boards.",
+    },
+  ] satisfies FaqItem[],
 } as const;
 
 export type SiteConfig = typeof siteConfig;

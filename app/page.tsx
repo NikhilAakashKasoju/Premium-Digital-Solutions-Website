@@ -8,6 +8,10 @@ import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { Industries } from "@/components/sections/industries";
 import { AiSection } from "@/components/sections/ai-section";
 import { Technology } from "@/components/sections/technology";
+import { Pricing } from "@/components/sections/pricing";
+import { Faq } from "@/components/sections/faq";
+import { Contact } from "@/components/sections/contact";
+import { FinalCta } from "@/components/sections/final-cta";
 
 export default function Home() {
   return (
@@ -22,6 +26,10 @@ export default function Home() {
       <Industries />
       <AiSection />
       <Technology />
+      <Pricing />
+      <Faq />
+      <Contact />
+      <FinalCta />
     </>
   );
 }
