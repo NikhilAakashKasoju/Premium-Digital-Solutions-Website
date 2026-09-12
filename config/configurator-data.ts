@@ -9,7 +9,7 @@
  * these types don't need to change, only where the data comes from.
  */
 
-import type { CalendarSlot } from "@/lib/preview-types";
+import type { CalendarSlot, ChatMessage } from "@/lib/preview-types";
 
 export type ConfiguratorOptionId =
   | "business-website"
@@ -32,11 +32,6 @@ export type PreviewRow = {
   meta: string;
   progress?: number;
   status?: "done" | "active" | "pending";
-};
-
-export type ChatMessage = {
-  from: "user" | "assistant";
-  text: string;
 };
 
 export type ProductTile = {

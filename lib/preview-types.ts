@@ -12,3 +12,14 @@ export type CalendarSlot = {
   time: string;
   selected?: boolean;
 };
+
+/**
+ * A single turn in a scripted two-party conversation. Shared by the
+ * interactive configurator's "AI Chatbot" preview and the homepage AI
+ * section's demo (see components/sections/preview-chat.tsx) — one
+ * shape and one renderer for both.
+ */
+export type ChatMessage = {
+  from: "user" | "assistant";
+  text: string;
+};

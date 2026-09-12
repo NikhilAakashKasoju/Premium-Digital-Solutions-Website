@@ -6,6 +6,8 @@ import { Portfolio } from "@/components/sections/portfolio";
 import { HowWeWork } from "@/components/sections/how-we-work";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { Industries } from "@/components/sections/industries";
+import { AiSection } from "@/components/sections/ai-section";
+import { Technology } from "@/components/sections/technology";
 
 export default function Home() {
   return (
@@ -18,6 +20,8 @@ export default function Home() {
       <HowWeWork />
       <WhyChooseUs />
       <Industries />
+      <AiSection />
+      <Technology />
     </>
   );
 }

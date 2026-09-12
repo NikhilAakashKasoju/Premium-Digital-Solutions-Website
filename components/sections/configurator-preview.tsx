@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data";
 import { WindowFrame } from "@/components/ui/window-frame";
 import { PreviewCalendar } from "@/components/sections/preview-calendar";
+import { PreviewChat } from "@/components/sections/preview-chat";
 
 /**
  * The framed "device" shell every preview renders inside — a window
@@ -79,25 +80,7 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
     case "chat":
       return (
         <div className="flex h-full flex-col justify-between gap-4">
-          <div className="space-y-2.5">
-            {preview.messages.map((message, i) => (
-              <div
-                key={i}
-                className={cn("flex", message.from === "user" ? "justify-end" : "justify-start")}
-              >
-                <p
-                  className={cn(
-                    "max-w-[80%] rounded-lg px-3 py-2 text-xs leading-relaxed",
-                    message.from === "user"
-                      ? "bg-brand-accent-button text-brand-foreground"
-                      : "border border-brand-border text-brand-muted",
-                  )}
-                >
-                  {message.text}
-                </p>
-              </div>
-            ))}
-          </div>
+          <PreviewChat messages={preview.messages} />
           <div className="flex items-center gap-2 rounded-md border border-brand-border px-3 py-2">
             <span className="flex-1 text-xs text-brand-muted">Type a message…</span>
             <Send className="size-4 text-brand-accent-2" aria-hidden />

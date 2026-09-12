@@ -44,6 +44,11 @@ export type Differentiator = {
   description: string;
 };
 
+export type TechCategory = {
+  label: string;
+  items: readonly string[];
+};
+
 export type Industry = {
   /** Used to derive both the CTA href (`/industries/{slug}`) and a future landing-page route. */
   slug: string;
@@ -291,6 +296,19 @@ export const siteConfig = {
       description: "Simple, fast websites and booking tools that help nearby customers find and choose you.",
     },
   ] satisfies Industry[],
+
+  /**
+   * "Our Technology" ecosystem — grouped chips rather than a logo
+   * wall. Order matters (a rough "what a request touches first" flow:
+   * frontend → backend → database → cloud → AI).
+   */
+  technology: [
+    { label: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+    { label: "Backend", items: ["Node.js", "Python", "APIs"] },
+    { label: "Database", items: ["PostgreSQL", "Supabase"] },
+    { label: "Cloud", items: ["Vercel", "AWS", "Azure"] },
+    { label: "AI", items: ["OpenAI", "AI Agents", "RAG", "Automation"] },
+  ] satisfies TechCategory[],
 } as const;
 
 export type SiteConfig = typeof siteConfig;
