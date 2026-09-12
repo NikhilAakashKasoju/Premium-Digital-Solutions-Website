@@ -19,9 +19,14 @@ export type SocialLink = {
   icon: "Linkedin" | "X" | "Github";
 };
 
-export type ServiceOffering = {
+export type WhatWeBuildCard = {
+  slug: string;
+  /** Icon name, resolved against a lookup map at the component that renders it. */
+  icon: "Globe" | "AppWindow" | "Building2" | "Bot";
   title: string;
   description: string;
+  capabilities: readonly string[];
+  cta: { label: string; href: string };
 };
 
 export const siteConfig = {
@@ -61,14 +66,71 @@ export const siteConfig = {
     { label: "GitHub", href: "https://github.com/yourbrand", icon: "Github" },
   ] satisfies SocialLink[],
 
-  services: [
-    { title: "Business Websites", description: "Static and dynamic websites built for speed and credibility." },
-    { title: "E-commerce", description: "Conversion-focused online stores, from catalog to checkout." },
-    { title: "Custom Web Applications", description: "Bespoke, database-driven applications for real business workflows." },
-    { title: "Business Software", description: "CRM, LMS and internal dashboards tailored to how your team works." },
-    { title: "AI Chatbots", description: "Conversational assistants that handle support and sales around the clock." },
-    { title: "AI Automation", description: "Workflow and process automation powered by applied AI." },
-  ] satisfies ServiceOffering[],
+  /** Capability strip directly under the hero — kept to short, scannable tags. */
+  capabilities: [
+    "Websites",
+    "Web Applications",
+    "E-commerce",
+    "Business Software",
+    "AI Automation",
+    "Cloud Solutions",
+  ],
+
+  /** "What We Build" section: one card per practice area. */
+  whatWeBuild: [
+    {
+      slug: "website-development",
+      icon: "Globe",
+      title: "Website Development",
+      description: "Static websites, dynamic websites, CMS and e-commerce.",
+      capabilities: [
+        "Marketing & brand websites",
+        "CMS-powered content sites",
+        "E-commerce storefronts",
+        "Landing pages & campaigns",
+      ],
+      cta: { label: "Explore website development", href: "/services#website-development" },
+    },
+    {
+      slug: "web-applications",
+      icon: "AppWindow",
+      title: "Web Applications",
+      description: "Custom applications designed around business workflows.",
+      capabilities: [
+        "Internal tools & portals",
+        "Multi-tenant SaaS products",
+        "Workflow & approval systems",
+        "Third-party integrations",
+      ],
+      cta: { label: "Explore web applications", href: "/services#web-applications" },
+    },
+    {
+      slug: "business-software",
+      icon: "Building2",
+      title: "Business Software",
+      description: "CRM, LMS, inventory, workflow management and reporting.",
+      capabilities: [
+        "CRM & sales pipelines",
+        "Learning management (LMS)",
+        "Inventory & operations",
+        "Reporting & analytics",
+      ],
+      cta: { label: "Explore business software", href: "/services#business-software" },
+    },
+    {
+      slug: "ai-automation",
+      icon: "Bot",
+      title: "AI & Automation",
+      description: "AI assistants, chatbots, WhatsApp automation and intelligent workflows.",
+      capabilities: [
+        "AI chat assistants",
+        "WhatsApp & messaging automation",
+        "Document & data automation",
+        "Intelligent workflow orchestration",
+      ],
+      cta: { label: "Explore AI & automation", href: "/services#ai-automation" },
+    },
+  ] satisfies WhatWeBuildCard[],
 } as const;
 
 export type SiteConfig = typeof siteConfig;

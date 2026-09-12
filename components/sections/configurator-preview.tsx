@@ -1,0 +1,223 @@
+import { Send, ShoppingCart } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data";
+
+/**
+ * The framed "device" shell every preview renders inside — a window
+ * chrome (traffic-light dots + title) matching the card language
+ * already established in the hero visual, so this reads as part of
+ * the same product rather than a one-off widget.
+ */
+export function ConfiguratorPreview({ option }: { option: ConfiguratorOption }) {
+  return (
+    <div className="relative flex h-full min-h-[22rem] flex-col rounded-xl border border-brand-border bg-brand-secondary/60 p-5 md:min-h-[26rem] md:p-6">
+      <div className="flex items-center gap-2 border-b border-brand-border pb-4">
+        <span className="flex gap-1.5" aria-hidden>
+          <span className="size-2.5 rounded-full bg-brand-border" />
+          <span className="size-2.5 rounded-full bg-brand-border" />
+          <span className="size-2.5 rounded-full bg-brand-border" />
+        </span>
+        <span className="ml-2 text-xs font-medium text-brand-muted">{option.previewTitle}</span>
+      </div>
+
+      <div className="flex-1 pt-5">
+        <PreviewBody option={option} />
+      </div>
+    </div>
+  );
+}
+
+function PreviewBody({ option }: { option: ConfiguratorOption }) {
+  const { preview } = option;
+
+  switch (preview.kind) {
+    case "website":
+      return (
+        <div className="space-y-2.5">
+          {preview.blocks.map((block, i) =>
+            block.label.toLowerCase().includes("grid") ? (
+              <div key={i} className="grid grid-cols-3 gap-2">
+                {[0, 1, 2].map((n) => (
+                  <div key={n} className="h-10 rounded-md bg-brand-border/60" />
+                ))}
+              </div>
+            ) : (
+              <div
+                key={i}
+                className={cn(
+                  "rounded-md bg-brand-border/60",
+                  block.size === "lg" && "h-20",
+                  block.size === "md" && "h-12",
+                  block.size === "sm" && "h-3 w-1/3",
+                )}
+              />
+            ),
+          )}
+        </div>
+      );
+
+    case "grid":
+      return (
+        <div className="grid grid-cols-2 gap-3">
+          {preview.items.map((item) => (
+            <div key={item.label} className="rounded-lg border border-brand-border p-2.5">
+              <div className="aspect-square rounded-md bg-brand-border/60" />
+              <p className="mt-2 truncate text-xs text-brand-foreground">{item.label}</p>
+              <p className="text-xs font-medium text-brand-accent-2">{item.price}</p>
+            </div>
+          ))}
+          <span className="pointer-events-none absolute right-6 top-6 flex size-8 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent-2 md:right-8 md:top-8">
+            <ShoppingCart className="size-4" aria-hidden />
+          </span>
+        </div>
+      );
+
+    case "calendar": {
+      const days = Array.from(new Set(preview.slots.map((s) => s.day)));
+      return (
+        <div>
+          <div className="grid grid-cols-5 gap-2">
+            {days.map((day) => (
+              <div key={day} className="space-y-2">
+                <p className="text-center text-xs text-brand-muted">{day}</p>
+                {preview.slots
+                  .filter((s) => s.day === day)
+                  .map((slot) => (
+                    <div
+                      key={`${slot.day}-${slot.time}`}
+                      className={cn(
+                        "rounded-md border px-1.5 py-1 text-center text-[11px]",
+                        slot.selected
+                          ? "border-brand-accent bg-brand-accent/15 text-brand-foreground"
+                          : "border-brand-border text-brand-muted",
+                      )}
+                    >
+                      {slot.time}
+                    </div>
+                  ))}
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 rounded-md bg-brand-accent-button px-4 py-2 text-center text-sm font-medium text-brand-foreground">
+            Confirm booking
+          </div>
+        </div>
+      );
+    }
+
+    case "chat":
+      return (
+        <div className="flex h-full flex-col justify-between gap-4">
+          <div className="space-y-2.5">
+            {preview.messages.map((message, i) => (
+              <div
+                key={i}
+                className={cn("flex", message.from === "user" ? "justify-end" : "justify-start")}
+              >
+                <p
+                  className={cn(
+                    "max-w-[80%] rounded-lg px-3 py-2 text-xs leading-relaxed",
+                    message.from === "user"
+                      ? "bg-brand-accent-button text-brand-foreground"
+                      : "border border-brand-border text-brand-muted",
+                  )}
+                >
+                  {message.text}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 rounded-md border border-brand-border px-3 py-2">
+            <span className="flex-1 text-xs text-brand-muted">Type a message…</span>
+            <Send className="size-4 text-brand-accent-2" aria-hidden />
+          </div>
+        </div>
+      );
+
+    case "workflow":
+      return (
+        <div className="flex items-center justify-between">
+          {preview.nodes.map((node, i) => (
+            <div key={node.label} className="flex flex-1 items-center">
+              <div className="flex flex-col items-center gap-2">
+                <span className="flex size-9 items-center justify-center rounded-full border-2 border-brand-accent bg-brand-accent/15 text-xs font-semibold text-brand-foreground">
+                  {i + 1}
+                </span>
+                <span className="text-center text-xs text-brand-muted">{node.label}</span>
+              </div>
+              {i < preview.nodes.length - 1 && <span className="mx-1 h-px flex-1 bg-brand-border" />}
+            </div>
+          ))}
+        </div>
+      );
+
+    case "stats":
+      return (
+        <div>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            {preview.stats.map((stat) => (
+              <div key={stat.label} className="rounded-lg border border-brand-border p-3">
+                <p className="text-lg font-semibold text-brand-foreground">{stat.value}</p>
+                <p className="mt-0.5 text-xs text-brand-muted">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {preview.chart && (
+            <div className="mt-4 flex h-16 items-end gap-1.5">
+              {preview.chart.map((value, i) => (
+                <div
+                  key={i}
+                  className="flex-1 rounded-sm bg-brand-accent-2/70"
+                  style={{ height: `${value}%` }}
+                />
+              ))}
+            </div>
+          )}
+
+          {preview.rows.length > 0 && (
+            <ul className="mt-4 space-y-2">
+              {preview.rows.map((row) => (
+                <PreviewRowItem key={row.label} row={row} />
+              ))}
+            </ul>
+          )}
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
+function PreviewRowItem({ row }: { row: PreviewRow }) {
+  return (
+    <li className="flex items-center justify-between gap-3 rounded-md border border-brand-border px-3 py-2 text-xs">
+      <span className="truncate text-brand-foreground">{row.label}</span>
+
+      {typeof row.progress === "number" ? (
+        <span className="flex w-20 items-center gap-2">
+          <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-brand-border">
+            <span
+              className="block h-full rounded-full bg-brand-accent-2"
+              style={{ width: `${row.progress}%` }}
+            />
+          </span>
+        </span>
+      ) : (
+        <span
+          className={cn(
+            "shrink-0",
+            row.status === "done" && "text-brand-accent-2",
+            row.status === "active" && "text-brand-foreground",
+            row.status === "pending" && "text-brand-muted",
+            !row.status && "text-brand-muted",
+          )}
+        >
+          {row.meta}
+        </span>
+      )}
+    </li>
+  );
+}
