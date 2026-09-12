@@ -106,7 +106,7 @@ export function Contact() {
             <button
               type="button"
               onClick={resetForm}
-              className="mt-6 text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80"
+              className="mt-6 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
             >
               Send another message
             </button>

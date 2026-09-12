@@ -46,7 +46,7 @@ export function AiSection() {
               contact method — ready for your team to follow up on.
             </p>
 
-            <Link href="/contact" prefetch={false} className={buttonVariants({ size: "lg", className: "mt-8" })}>
+            <Link href="#contact" prefetch={false} className={buttonVariants({ size: "lg", className: "mt-8" })}>
               Build an AI-Powered Solution
             </Link>
           </div>

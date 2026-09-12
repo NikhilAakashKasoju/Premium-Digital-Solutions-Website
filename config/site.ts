@@ -16,7 +16,7 @@ export type SocialLink = {
   label: string;
   href: string;
   /** Icon name, resolved against components/icons/brand-icons.tsx. */
-  icon: "Linkedin" | "X" | "Github";
+  icon: "Linkedin" | "Instagram" | "Youtube";
 };
 
 export type WhatWeBuildCard = {
@@ -98,13 +98,34 @@ export const siteConfig = {
     phone: "+91 00000 00000",
   },
 
+  // Routes marked "real" below anchor to a section that already exists
+  // on this single page (id="services"/"work"/"pricing"/"contact"); the
+  // rest are honest placeholders for pages this site doesn't have yet
+  // (Solutions, Industries, About). Keep that split in sync with the
+  // actual section ids in app/page.tsx as real pages get built.
   nav: [
-    { label: "Services", href: "/services" },
+    { label: "Services", href: "#services" },
     { label: "Solutions", href: "/solutions" },
     { label: "Industries", href: "/industries" },
-    { label: "Work", href: "/work" },
+    { label: "Work", href: "#work" },
     { label: "About", href: "/about" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Pricing", href: "#pricing" },
+  ] satisfies NavLink[],
+
+  /** Footer navigation column — a distinct list from `nav` (swaps Pricing for Contact per the footer spec), same real-vs-placeholder split. */
+  footerNav: [
+    { label: "Services", href: "#services" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Industries", href: "/industries" },
+    { label: "Work", href: "#work" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "#contact" },
+  ] satisfies NavLink[],
+
+  /** Footer legal links — placeholder routes; no Privacy/Terms pages exist yet. */
+  legalLinks: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
   ] satisfies NavLink[],
 
   hero: {
@@ -112,15 +133,37 @@ export const siteConfig = {
     headline: "Build Digital Experiences That Grow Your Business.",
     supporting:
       "Websites, business applications and AI-powered automation designed to help businesses attract customers, streamline operations and grow.",
-    primaryCta: { label: "Start a Project", href: "/contact" },
-    secondaryCta: { label: "Explore Our Work", href: "/work" },
+    primaryCta: { label: "Start a Project", href: "#contact" },
+    secondaryCta: { label: "Explore Our Work", href: "#work" },
   },
 
   socials: [
     { label: "LinkedIn", href: "https://linkedin.com/company/your-brand", icon: "Linkedin" },
-    { label: "X (Twitter)", href: "https://x.com/yourbrand", icon: "X" },
-    { label: "GitHub", href: "https://github.com/yourbrand", icon: "Github" },
+    { label: "Instagram", href: "https://instagram.com/yourbrand", icon: "Instagram" },
+    { label: "YouTube", href: "https://youtube.com/@yourbrand", icon: "Youtube" },
   ] satisfies SocialLink[],
+
+  /** Solid brand color for the browser chrome (mobile address bar, PWA splash). */
+  themeColor: "#0b1020",
+
+  /**
+   * Centralized SEO defaults, consumed by app/layout.tsx's `metadata`
+   * export (and, once built, each future page's own `generateMetadata`/
+   * `metadata`, which should override these rather than restate them).
+   */
+  seo: {
+    title: "Digital Solutions for Modern Businesses | YOUR BRAND",
+    description:
+      "We build high-performance websites, web applications, business software and AI-powered automation for growing businesses.",
+    keywords: [
+      "digital solutions agency",
+      "website development",
+      "web application development",
+      "business software development",
+      "AI automation",
+      "custom software development",
+    ],
+  },
 
   /** Capability strip directly under the hero — kept to short, scannable tags. */
   capabilities: [

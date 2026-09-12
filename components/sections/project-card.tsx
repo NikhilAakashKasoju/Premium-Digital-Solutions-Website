@@ -44,7 +44,7 @@ export function ProjectCard({ project }: { project: PortfolioProject }) {
         <Link
           href={project.cta.href}
           prefetch={false}
-          className="group/cta mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80"
+          className="group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
         >
           {project.cta.label}
           <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-0.5" aria-hidden />

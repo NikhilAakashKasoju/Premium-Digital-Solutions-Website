@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { AppWindow, ArrowRight, Bot, Building2, Check, Globe, type LucideIcon } from "lucide-react";
+import { AppWindow, Bot, Building2, Check, Globe, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type WhatWeBuildCard } from "@/config/site";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
+import { ArrowLink } from "@/components/ui/arrow-link";
 
 // Keyed by the exact icon-name union (not `string`) so this object only
 // type-checks if every icon `WhatWeBuildCard` can name has an entry — no
@@ -69,14 +69,9 @@ export function WhatWeBuild() {
                   ))}
                 </ul>
 
-                <Link
-                  href={item.cta.href}
-                  prefetch={false}
-                  className="group mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80"
-                >
+                <ArrowLink href={item.cta.href} className="mt-6">
                   {item.cta.label}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                </Link>
+                </ArrowLink>
               </motion.article>
             );
           })}

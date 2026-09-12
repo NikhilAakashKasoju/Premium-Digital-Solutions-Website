@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import {
-  ArrowRight,
   Briefcase,
   Building2,
   GraduationCap,
@@ -19,6 +17,7 @@ import { siteConfig, type Industry } from "@/config/site";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
+import { ArrowLink } from "@/components/ui/arrow-link";
 
 // Keyed by the exact icon-name union (not `string`) so this object only
 // type-checks if every icon `Industry` can name has an entry — no
@@ -81,14 +80,9 @@ export function Industries() {
                 <h3 className="mt-5 text-h4 font-semibold text-brand-foreground">{industry.title}</h3>
                 <p className="mt-2 text-sm text-brand-muted">{industry.description}</p>
 
-                <Link
-                  href={`/industries/${industry.slug}`}
-                  prefetch={false}
-                  className="group mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80"
-                >
+                <ArrowLink href={`/industries/${industry.slug}`} className="mt-5">
                   Explore {industry.title} solutions
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                </Link>
+                </ArrowLink>
               </motion.div>
             );
           })}
