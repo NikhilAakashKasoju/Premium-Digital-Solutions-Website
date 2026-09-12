@@ -15,13 +15,21 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { CONFIGURATOR_OPTIONS, type ConfiguratorOptionId } from "@/config/configurator-data";
+import {
+  CONFIGURATOR_OPTIONS,
+  type ConfiguratorOption,
+  type ConfiguratorOptionId,
+} from "@/config/configurator-data";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { SectionHeading } from "@/components/layout/section-heading";
 import { cn } from "@/lib/utils";
 import { ConfiguratorPreview } from "@/components/sections/configurator-preview";
 
-const optionIcons: Record<string, LucideIcon> = {
+// Keyed by the exact icon-name union (not `string`) so this object only
+// type-checks if every icon `ConfiguratorOption` can name has an entry —
+// no runtime fallback needed for a "missing icon" case that can't happen.
+const optionIcons: Record<ConfiguratorOption["icon"], LucideIcon> = {
   Globe,
   ShoppingBag,
   CalendarCheck,
@@ -47,16 +55,15 @@ export function Configurator() {
   return (
     <Section>
       <Container>
-        <div className="max-w-2xl">
-          <h2 className="text-h2 font-semibold text-brand-foreground">What Can We Build For You?</h2>
-          <p className="mt-4 text-lead text-brand-muted">
-            Pick a project type and see how it could come together.
-          </p>
-        </div>
+        <SectionHeading
+          title="What Can We Build For You?"
+          description="Pick a project type and see how it could come together."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-10">
           {/* Option selector: horizontally scrollable chips on mobile/tablet, a vertical list on desktop. */}
           <div
+            role="group"
             aria-label="Project types"
             className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-2 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0"
           >

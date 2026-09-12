@@ -2,6 +2,8 @@ import { Send, ShoppingCart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data";
+import { WindowFrame } from "@/components/ui/window-frame";
+import { PreviewCalendar } from "@/components/sections/preview-calendar";
 
 /**
  * The framed "device" shell every preview renders inside — a window
@@ -11,20 +13,11 @@ import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data"
  */
 export function ConfiguratorPreview({ option }: { option: ConfiguratorOption }) {
   return (
-    <div className="relative flex h-full min-h-[22rem] flex-col rounded-xl border border-brand-border bg-brand-secondary/60 p-5 md:min-h-[26rem] md:p-6">
-      <div className="flex items-center gap-2 border-b border-brand-border pb-4">
-        <span className="flex gap-1.5" aria-hidden>
-          <span className="size-2.5 rounded-full bg-brand-border" />
-          <span className="size-2.5 rounded-full bg-brand-border" />
-          <span className="size-2.5 rounded-full bg-brand-border" />
-        </span>
-        <span className="ml-2 text-xs font-medium text-brand-muted">{option.previewTitle}</span>
-      </div>
-
+    <WindowFrame title={option.previewTitle} className="min-h-[22rem] md:min-h-[26rem] md:p-6">
       <div className="flex-1 pt-5">
         <PreviewBody option={option} />
       </div>
-    </div>
+    </WindowFrame>
   );
 }
 
@@ -73,38 +66,15 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
         </div>
       );
 
-    case "calendar": {
-      const days = Array.from(new Set(preview.slots.map((s) => s.day)));
+    case "calendar":
       return (
         <div>
-          <div className="grid grid-cols-5 gap-2">
-            {days.map((day) => (
-              <div key={day} className="space-y-2">
-                <p className="text-center text-xs text-brand-muted">{day}</p>
-                {preview.slots
-                  .filter((s) => s.day === day)
-                  .map((slot) => (
-                    <div
-                      key={`${slot.day}-${slot.time}`}
-                      className={cn(
-                        "rounded-md border px-1.5 py-1 text-center text-[11px]",
-                        slot.selected
-                          ? "border-brand-accent bg-brand-accent/15 text-brand-foreground"
-                          : "border-brand-border text-brand-muted",
-                      )}
-                    >
-                      {slot.time}
-                    </div>
-                  ))}
-              </div>
-            ))}
-          </div>
+          <PreviewCalendar slots={preview.slots} />
           <div className="mt-5 rounded-md bg-brand-accent-button px-4 py-2 text-center text-sm font-medium text-brand-foreground">
             Confirm booking
           </div>
         </div>
       );
-    }
 
     case "chat":
       return (

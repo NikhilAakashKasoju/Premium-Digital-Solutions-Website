@@ -9,6 +9,8 @@
  * these types don't need to change, only where the data comes from.
  */
 
+import type { CalendarSlot } from "@/lib/preview-types";
+
 export type ConfiguratorOptionId =
   | "business-website"
   | "ecommerce"
@@ -35,12 +37,6 @@ export type PreviewRow = {
 export type ChatMessage = {
   from: "user" | "assistant";
   text: string;
-};
-
-export type CalendarSlot = {
-  day: string;
-  time: string;
-  selected?: boolean;
 };
 
 export type ProductTile = {

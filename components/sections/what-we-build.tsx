@@ -4,11 +4,15 @@ import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import { AppWindow, ArrowRight, Bot, Building2, Check, Globe, type LucideIcon } from "lucide-react";
 
-import { siteConfig } from "@/config/site";
+import { siteConfig, type WhatWeBuildCard } from "@/config/site";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { SectionHeading } from "@/components/layout/section-heading";
 
-const cardIcons: Record<string, LucideIcon> = {
+// Keyed by the exact icon-name union (not `string`) so this object only
+// type-checks if every icon `WhatWeBuildCard` can name has an entry — no
+// runtime fallback needed for a "missing icon" case that can't happen.
+const cardIcons: Record<WhatWeBuildCard["icon"], LucideIcon> = {
   Globe,
   AppWindow,
   Building2,
@@ -29,12 +33,10 @@ export function WhatWeBuild() {
   return (
     <Section id="services">
       <Container>
-        <div className="max-w-2xl">
-          <h2 className="text-h2 font-semibold text-brand-foreground">What We Build</h2>
-          <p className="mt-4 text-lead text-brand-muted">
-            From your first idea to a production-ready digital platform.
-          </p>
-        </div>
+        <SectionHeading
+          title="What We Build"
+          description="From your first idea to a production-ready digital platform."
+        />
 
         <motion.div
           initial="hidden"
