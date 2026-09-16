@@ -104,6 +104,15 @@ export const siteConfig = {
     phone: "+91 00000 00000",
   },
 
+  // "Who you're working with" — shown in the Why Choose Us section
+  // (see components/sections/why-choose-us.tsx). Every line here is a
+  // fact as the founder gave it, not a marketing embellishment.
+  founder: {
+    name: "Nikhil Aakash Kasoju",
+    role: "AI/ML + Full-Stack Developer",
+    bio: "Builds complete products solo — from data pipelines to polished frontends. EduFulness and Music Gurukula, both featured above, are live and in daily use.",
+  },
+
   // Every nav item below anchors to a section that already exists on
   // this single page: Services -> id="services" (What We Build),
   // Solutions -> id="solutions" (the "What Can We Build For You?"
@@ -147,6 +156,10 @@ export const siteConfig = {
       "Websites, business applications and AI-powered automation designed to help businesses attract customers, streamline operations and grow.",
     primaryCta: { label: "Start a Project", href: "#contact" },
     secondaryCta: { label: "Explore Our Work", href: "#work" },
+    // A modest, honest social-proof line — real, verifiable facts about
+    // shipped work (see the "Real Project" entries in config/portfolio.ts),
+    // not a marketing-style headline number.
+    proofStat: "2 live products shipped, solo — including a platform serving 5,000+ students",
   },
 
   socials: [
@@ -325,7 +338,8 @@ export const siteConfig = {
       slug: "education",
       icon: "GraduationCap",
       title: "Education",
-      description: "Learning platforms, course portals and student dashboards that make content easy to deliver and track.",
+      description:
+        "Learning platforms, course portals and student dashboards — including EduFulness, a live platform serving 5,000+ students, and Music Gurukula's student-management tool.",
     },
     {
       slug: "healthcare",

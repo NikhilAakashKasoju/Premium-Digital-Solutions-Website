@@ -2,6 +2,8 @@ import { Send, ShoppingCart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data";
+import { AnimatedBarChart } from "@/components/ui/animated-bar-chart";
+import { AnimatedStatValue } from "@/components/ui/animated-stat-value";
 import { WindowFrame } from "@/components/ui/window-frame";
 import { PreviewCalendar } from "@/components/sections/preview-calendar";
 import { PreviewChat } from "@/components/sections/preview-chat";
@@ -59,7 +61,10 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
         // instead and overlaps the title bar.
         <div className="relative grid grid-cols-2 gap-3">
           {preview.items.map((item) => (
-            <div key={item.label} className="rounded-lg border border-brand-border p-2.5">
+            <div
+              key={item.label}
+              className="rounded-lg border border-brand-border p-2.5 transition-colors hover:border-brand-accent-2/50"
+            >
               <div className="aspect-square rounded-md bg-brand-border/60" />
               <p className="mt-2 truncate text-xs text-brand-foreground">{item.label}</p>
               <p className="text-xs font-medium text-brand-accent-2">{item.price}</p>
@@ -114,24 +119,17 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
         <div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {preview.stats.map((stat) => (
-              <div key={stat.label} className="rounded-lg border border-brand-border p-3">
-                <p className="text-lg font-semibold text-brand-foreground">{stat.value}</p>
+              <div
+                key={stat.label}
+                className="rounded-lg border border-brand-border p-3 transition-colors hover:border-brand-accent-2/50"
+              >
+                <AnimatedStatValue value={stat.value} className="text-lg font-semibold text-brand-foreground" />
                 <p className="mt-0.5 text-xs text-brand-muted">{stat.label}</p>
               </div>
             ))}
           </div>
 
-          {preview.chart && (
-            <div className="mt-4 flex h-16 items-end gap-1.5">
-              {preview.chart.map((value, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-sm bg-brand-accent-2/70"
-                  style={{ height: `${value}%` }}
-                />
-              ))}
-            </div>
-          )}
+          {preview.chart && <AnimatedBarChart values={preview.chart} className="mt-4 h-16" />}
 
           {preview.rows.length > 0 && (
             <ul className="mt-4 space-y-2">
@@ -150,7 +148,7 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
 
 function PreviewRowItem({ row }: { row: PreviewRow }) {
   return (
-    <li className="flex items-center justify-between gap-3 rounded-md border border-brand-border px-3 py-2 text-xs">
+    <li className="flex items-center justify-between gap-3 rounded-md border border-brand-border px-3 py-2 text-xs transition-colors hover:border-brand-accent-2/50">
       <span className="truncate text-brand-foreground">{row.label}</span>
 
       {typeof row.progress === "number" ? (

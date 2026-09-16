@@ -54,6 +54,33 @@ export function WhyChooseUs() {
             );
           })}
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={cn(cardSurfaceClass, "mt-6 flex flex-col items-start gap-5 p-6 sm:flex-row sm:items-center lg:mt-8")}
+        >
+          <span
+            aria-hidden
+            className="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand-accent/15 text-lg font-semibold text-brand-accent-2"
+          >
+            {siteConfig.founder.name
+              .split(" ")
+              .map((part) => part[0])
+              .slice(0, 2)
+              .join("")}
+          </span>
+
+          <div>
+            <p className="text-sm font-semibold text-brand-foreground">
+              {siteConfig.founder.name}
+              <span className="ml-2 font-normal text-brand-muted">— {siteConfig.founder.role}</span>
+            </p>
+            <p className="mt-1.5 text-sm text-brand-muted">{siteConfig.founder.bio}</p>
+          </div>
+        </motion.div>
       </Container>
     </Section>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, ChevronDown, Clock, Loader2 } from "lucide-react";
 
 import { BUDGET_OPTIONS, EMPTY_LEAD, PROJECT_NEED_OPTIONS, type LeadPayload } from "@/config/contact";
 import { submitLead } from "@/lib/submit-lead";
@@ -345,16 +345,23 @@ export function Contact() {
             </div>
           )}
 
-          <Button type="submit" disabled={status === "submitting"} className="mt-8 w-full sm:w-auto">
-            {status === "submitting" ? (
-              <>
-                <Loader2 className="size-4 animate-spin" aria-hidden />
-                Sending…
-              </>
-            ) : (
-              "Send Message"
-            )}
-          </Button>
+          <div className="mt-8 flex flex-col-reverse items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <Button type="submit" disabled={status === "submitting"} className="w-full sm:w-auto">
+              {status === "submitting" ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" aria-hidden />
+                  Sending…
+                </>
+              ) : (
+                "Send Message"
+              )}
+            </Button>
+
+            <span className="flex items-center gap-1.5 rounded-full border border-brand-accent-2/40 bg-brand-accent-2/10 px-3 py-1.5 text-xs font-medium text-brand-accent-2">
+              <Clock className="size-3.5 shrink-0" aria-hidden />
+              We reply within 1 business day
+            </span>
+          </div>
         </motion.form>
       </Container>
     </Section>

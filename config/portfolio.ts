@@ -1,15 +1,21 @@
 /**
  * "Selected Work" portfolio data.
  *
- * These are CONCEPT PROJECTS — illustrative case studies, not real
- * clients. `ProjectCard` renders a "Concept Project" label from
- * `isConcept` for every entry below; this file is the single place
- * that would change if/when real case studies replace them.
+ * Two real, shipped, solo-built projects lead this list (`isConcept:
+ * false`, each with a real `screenshot` and a `cta` linking out to the
+ * live site) — `ProjectCard` renders a "Real Project" label for these.
+ * Everything after them is a CONCEPT PROJECT: an illustrative case
+ * study, not a real client, rendered with a "Concept Project" label
+ * instead. This file is the single place that would change to swap
+ * more concept entries for real ones later.
  *
- * Each project's visual is built from a small set of reusable
+ * A concept project's visual is built from a small set of reusable
  * `PreviewBlock` kinds (stats / cards / list / calendar / profile /
- * chart / map) rather than a photo, so `ProjectPreview` can render
- * any project from data alone — no per-project markup.
+ * chart / map) rather than a photo, so `ProjectPreview` can render one
+ * from data alone — no per-project markup. A real project skips that
+ * entirely and shows an actual screenshot instead — inventing a fake
+ * "dashboard" for a real client would defeat the point of proving real
+ * work was done.
  */
 
 import type { CalendarSlot } from "@/lib/preview-types";
@@ -63,14 +69,52 @@ export type PortfolioProject = {
   industry: string;
   description: string;
   tags: readonly string[];
-  /** Always true here — every project in this file is illustrative, not a real client. */
-  isConcept: true;
+  /** false for the real, shipped projects below — everything else here is illustrative. */
+  isConcept: boolean;
   previewTitle: string;
-  blocks: readonly PreviewBlock[];
-  cta: { label: string; href: string };
+  /**
+   * Illustrative mockup blocks, composed from the small set of reusable
+   * `PreviewBlock` kinds — used for every concept project. Omit this
+   * (and set `screenshot` instead) for a real project: a made-up
+   * "dashboard" mockup would undercut the whole point of showing real
+   * proof, so real entries show an actual screenshot of the live site.
+   */
+  blocks?: readonly PreviewBlock[];
+  /** A real screenshot of the live product. Real projects only. */
+  screenshot?: { src: string; alt: string };
+  cta: {
+    label: string;
+    href: string;
+    /** True for a real project's link out to its live site (opens in a new tab). Internal "/work/…" case-study links are never external. */
+    external?: boolean;
+  };
 };
 
 export const PORTFOLIO_PROJECTS: readonly PortfolioProject[] = [
+  {
+    slug: "edufulness",
+    name: "EduFulness",
+    industry: "Education / EdTech Platform",
+    description:
+      "A multi-course ed-tech platform — live training, self-paced courses and interview prep across Azure Data Engineering, DSA, Agentic AI and Database & SQL. Live today at 5,000+ students enrolled, a 95% placement rate and a 4.9/5 rating from 9,400+ reviews.",
+    tags: ["Multi-course LMS", "Live + self-paced training", "Solo build"],
+    isConcept: false,
+    previewTitle: "edufulness.com",
+    screenshot: { src: "/work/edufulness.jpg", alt: "The EduFulness homepage, showing its course catalog and enrollment stats" },
+    cta: { label: "Visit edufulness.com", href: "https://edufulness.com", external: true },
+  },
+  {
+    slug: "music-gurukula",
+    name: "Music Gurukula",
+    industry: "Education / School Administration",
+    description:
+      "An admin dashboard for a music school run on the Gurukula mentorship model — one place to track student enrollment, subscription renewals and payments, so instructors spend less time on admin and more time teaching.",
+    tags: ["Student management", "Subscriptions & payments", "Solo build"],
+    isConcept: false,
+    previewTitle: "Gurukula Tracker",
+    screenshot: { src: "/work/music-gurukula.jpg", alt: "The Gurukula Tracker sign-in screen for managing students" },
+    cta: { label: "Visit the live app", href: "https://music-gurkula-tracker.vercel.app/", external: true },
+  },
   {
     slug: "eduflow",
     name: "EduFlow",

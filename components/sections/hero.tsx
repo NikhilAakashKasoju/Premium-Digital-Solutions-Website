@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ const item: Variants = {
 };
 
 export function Hero() {
-  const { eyebrow, headline, supporting, primaryCta, secondaryCta } = siteConfig.hero;
+  const { eyebrow, headline, supporting, primaryCta, secondaryCta, proofStat } = siteConfig.hero;
 
   return (
     <Section compact className="relative overflow-hidden lg:py-section">
@@ -79,6 +79,16 @@ export function Hero() {
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
             </Link>
           </motion.div>
+
+          {proofStat && (
+            <motion.p
+              variants={item}
+              className="mt-6 flex items-center gap-2 text-sm text-brand-muted"
+            >
+              <CheckCircle2 className="size-4 shrink-0 text-brand-accent-2" aria-hidden />
+              {proofStat}
+            </motion.p>
+          )}
         </motion.div>
 
         <div className="flex items-center justify-center lg:justify-end">

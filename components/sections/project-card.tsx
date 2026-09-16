@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 import type { PortfolioProject } from "@/config/portfolio";
 import { cardSurfaceClass, cn, FOCUS_RING } from "@/lib/utils";
@@ -25,9 +25,13 @@ export function ProjectCard({ project }: { project: PortfolioProject }) {
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
-          {project.isConcept && (
+          {project.isConcept ? (
             <span className="rounded-full border border-brand-accent-2/40 bg-brand-accent-2/10 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-brand-accent-2 uppercase">
               Concept Project
+            </span>
+          ) : (
+            <span className="rounded-full bg-brand-accent-button px-2.5 py-1 text-[11px] font-semibold tracking-wide text-brand-foreground uppercase">
+              Real Project
             </span>
           )}
           <span className="text-xs font-medium text-brand-muted">{project.industry}</span>
@@ -47,17 +51,32 @@ export function ProjectCard({ project }: { project: PortfolioProject }) {
           ))}
         </ul>
 
-        <Link
-          href={project.cta.href}
-          prefetch={false}
-          className={cn(
-            "group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80",
-            FOCUS_RING,
-          )}
-        >
-          {project.cta.label}
-          <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-0.5" aria-hidden />
-        </Link>
+        {project.cta.external ? (
+          <a
+            href={project.cta.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80",
+              FOCUS_RING,
+            )}
+          >
+            {project.cta.label}
+            <ExternalLink className="size-3.5 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" aria-hidden />
+          </a>
+        ) : (
+          <Link
+            href={project.cta.href}
+            prefetch={false}
+            className={cn(
+              "group/cta mt-6 inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-brand-accent-2 transition-opacity hover:opacity-80",
+              FOCUS_RING,
+            )}
+          >
+            {project.cta.label}
+            <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-0.5" aria-hidden />
+          </Link>
+        )}
       </div>
     </article>
   );

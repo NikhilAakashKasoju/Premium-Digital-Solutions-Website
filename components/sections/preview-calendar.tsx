@@ -23,10 +23,10 @@ export function PreviewCalendar({ slots }: { slots: readonly CalendarSlot[] }) {
               <div
                 key={`${slot.day}-${slot.time}`}
                 className={cn(
-                  "rounded-md border px-1.5 py-1 text-center text-[11px]",
+                  "rounded-md border px-1.5 py-1 text-center text-[11px] transition-colors",
                   slot.selected
                     ? "border-brand-accent bg-brand-accent/15 text-brand-foreground"
-                    : "border-brand-border text-brand-muted",
+                    : "border-brand-border text-brand-muted hover:border-brand-accent-2/50 hover:text-brand-foreground",
                 )}
               >
                 {slot.time}

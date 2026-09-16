@@ -1,7 +1,10 @@
+import Image from "next/image";
 import { MapPin, Star } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { CardTile, ListRow, PortfolioProject, PreviewBlock, StatTile } from "@/config/portfolio";
+import { AnimatedBarChart } from "@/components/ui/animated-bar-chart";
+import { AnimatedStatValue } from "@/components/ui/animated-stat-value";
 import { WindowFrame } from "@/components/ui/window-frame";
 import { PreviewCalendar } from "@/components/sections/preview-calendar";
 
@@ -11,13 +14,27 @@ import { PreviewCalendar } from "@/components/sections/preview-calendar";
  * illustrative UI in the product reads as part of one design system
  * rather than a one-off graphic. Purely presentational — no state, no
  * client-only APIs — so it stays a Server Component.
+ *
+ * A real project (`project.screenshot` set) shows an actual screenshot
+ * of the live site instead of the illustrative `blocks` a concept
+ * project renders — see config/portfolio.ts for why.
  */
 export function ProjectPreview({ project }: { project: PortfolioProject }) {
   return (
     <WindowFrame title={project.previewTitle} className="min-h-[20rem] gap-5">
-      {project.blocks.map((block, i) => (
-        <PreviewBlockView key={i} block={block} />
-      ))}
+      {project.screenshot ? (
+        <div className="relative -mx-5 -mb-5 mt-1 flex-1 overflow-hidden rounded-b-xl">
+          <Image
+            src={project.screenshot.src}
+            alt={project.screenshot.alt}
+            fill
+            sizes="(min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        </div>
+      ) : (
+        project.blocks?.map((block, i) => <PreviewBlockView key={i} block={block} />)
+      )}
     </WindowFrame>
   );
 }
@@ -59,7 +76,7 @@ function PreviewBlockView({ block }: { block: PreviewBlock }) {
 
     case "profile":
       return (
-        <div className="rounded-lg border border-brand-border p-3">
+        <div className="rounded-lg border border-brand-border p-3 transition-colors hover:border-brand-accent-2/50">
           <div className="flex items-center gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-accent/15 text-sm font-semibold text-brand-accent-2">
               {block.info.name
@@ -82,13 +99,7 @@ function PreviewBlockView({ block }: { block: PreviewBlock }) {
       );
 
     case "chart":
-      return (
-        <div className="flex h-24 flex-1 items-end gap-1.5">
-          {block.values.map((value, i) => (
-            <div key={i} className="flex-1 rounded-sm bg-brand-accent-2/70" style={{ height: `${value}%` }} />
-          ))}
-        </div>
-      );
+      return <AnimatedBarChart values={block.values} />;
 
     case "map":
       return (
@@ -96,7 +107,7 @@ function PreviewBlockView({ block }: { block: PreviewBlock }) {
           {block.pins.map((pin, i) => (
             <span
               key={i}
-              className="absolute flex size-5 -translate-x-1/2 -translate-y-full items-center justify-center text-brand-accent-2"
+              className="absolute flex size-5 -translate-x-1/2 -translate-y-full items-center justify-center text-brand-accent-2 transition-transform hover:-translate-y-[110%] hover:scale-110"
               style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
             >
               <MapPin className="size-5 fill-brand-accent/20" aria-hidden />
@@ -112,8 +123,8 @@ function PreviewBlockView({ block }: { block: PreviewBlock }) {
 
 function StatTileView({ stat }: { stat: StatTile }) {
   return (
-    <div className="rounded-lg border border-brand-border p-3">
-      <p className="text-base font-semibold text-brand-foreground">{stat.value}</p>
+    <div className="rounded-lg border border-brand-border p-3 transition-colors hover:border-brand-accent-2/50">
+      <AnimatedStatValue value={stat.value} className="text-base font-semibold text-brand-foreground" />
       <p className="mt-0.5 text-xs text-brand-muted">{stat.label}</p>
     </div>
   );
@@ -121,7 +132,7 @@ function StatTileView({ stat }: { stat: StatTile }) {
 
 function CardTileView({ card }: { card: CardTile }) {
   return (
-    <div className="rounded-lg border border-brand-border p-3">
+    <div className="rounded-lg border border-brand-border p-3 transition-colors hover:border-brand-accent-2/50">
       <div className="aspect-video rounded-md bg-brand-border/60" />
       <div className="mt-2 flex items-start justify-between gap-2">
         <p className="text-xs font-medium text-brand-foreground">{card.title}</p>
@@ -143,7 +154,7 @@ function CardTileView({ card }: { card: CardTile }) {
 
 function ListRowView({ row }: { row: ListRow }) {
   return (
-    <li className="flex items-center justify-between gap-3 rounded-md border border-brand-border px-3 py-2 text-xs">
+    <li className="flex items-center justify-between gap-3 rounded-md border border-brand-border px-3 py-2 text-xs transition-colors hover:border-brand-accent-2/50">
       <span className="truncate text-brand-foreground">{row.label}</span>
       <span className={cn("shrink-0", row.emphasis ? "font-semibold text-brand-foreground" : "text-brand-muted")}>
         {row.meta}
