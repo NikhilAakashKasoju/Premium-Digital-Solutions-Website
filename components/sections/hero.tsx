@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { HeroVisual } from "@/components/sections/hero-visual";
+import { HeroServiceCards, HeroServiceListCompact } from "@/components/sections/hero-visual";
 import { buttonVariants } from "@/components/ui/button";
 
 const container: Variants = {
@@ -35,65 +35,74 @@ export function Hero() {
         className="pointer-events-none absolute -top-40 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-brand-accent/10 blur-3xl"
       />
 
-      <Container className="relative grid items-center gap-16 lg:grid-cols-2 lg:gap-12">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={container}
-          className="max-w-2xl"
-        >
-          <motion.p
-            variants={item}
-            className="text-sm font-medium tracking-wide text-brand-accent-2 uppercase"
+      <Container className="relative">
+        {/* Centered headline with the four service cards floating around it
+            (desktop) and dashed connectors reaching out from the text —
+            hub-and-spoke, rather than the copy sharing the row with a
+            separate side visual. */}
+        <div className="relative mx-auto lg:flex lg:min-h-[36rem] lg:items-center lg:justify-center">
+          <HeroServiceCards />
+
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={container}
+            className="relative z-10 mx-auto max-w-2xl text-center"
           >
-            {eyebrow}
-          </motion.p>
-
-          <motion.h1
-            variants={item}
-            className="mt-6 text-h1 font-bold text-balance text-brand-foreground lg:text-display"
-          >
-            {headline}
-          </motion.h1>
-
-          <motion.p variants={item} className="mt-6 max-w-xl text-lead text-brand-muted">
-            {supporting}
-          </motion.p>
-
-          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
-            <Link
-              href={primaryCta.href}
-              prefetch={false}
-              className={cn(buttonVariants({ variant: "primary" }), "group")}
-            >
-              {primaryCta.label}
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-            </Link>
-
-            <Link
-              href={secondaryCta.href}
-              prefetch={false}
-              className={cn(buttonVariants({ variant: "outline" }), "group")}
-            >
-              {secondaryCta.label}
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-            </Link>
-          </motion.div>
-
-          {proofStat && (
             <motion.p
               variants={item}
-              className="mt-6 flex items-center gap-2 text-sm text-brand-muted"
+              className="text-sm font-medium tracking-wide text-brand-accent-2 uppercase"
             >
-              <CheckCircle2 className="size-4 shrink-0 text-brand-accent-2" aria-hidden />
-              {proofStat}
+              {eyebrow}
             </motion.p>
-          )}
-        </motion.div>
 
-        <div className="flex items-center justify-center lg:justify-end">
-          <HeroVisual />
+            <motion.h1
+              variants={item}
+              className="mt-6 text-h1 font-bold text-balance text-brand-foreground lg:text-display"
+            >
+              {headline}
+            </motion.h1>
+
+            <motion.p variants={item} className="mx-auto mt-6 max-w-xl text-lead text-brand-muted">
+              {supporting}
+            </motion.p>
+
+            <motion.div variants={item} className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href={primaryCta.href}
+                prefetch={false}
+                className={cn(buttonVariants({ variant: "primary" }), "group")}
+              >
+                {primaryCta.label}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </Link>
+
+              <Link
+                href={secondaryCta.href}
+                prefetch={false}
+                className={cn(buttonVariants({ variant: "outline" }), "group")}
+              >
+                {secondaryCta.label}
+                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+              </Link>
+            </motion.div>
+
+            {proofStat && (
+              <motion.p
+                variants={item}
+                className="mt-6 flex items-center justify-center gap-2 text-sm text-brand-muted"
+              >
+                <CheckCircle2 className="size-4 shrink-0 text-brand-accent-2" aria-hidden />
+                {proofStat}
+              </motion.p>
+            )}
+          </motion.div>
         </div>
+
+        {/* Below `lg`, the floating cards give way to a plain static grid —
+            there's no room to float them around centered copy without
+            overlapping it. */}
+        <HeroServiceListCompact className="mt-12 lg:hidden" />
       </Container>
     </Section>
   );
