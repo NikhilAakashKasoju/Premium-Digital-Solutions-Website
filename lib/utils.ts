@@ -38,3 +38,13 @@ export const FOCUS_RING_ON_SECONDARY =
  * at once, now centralized here.
  */
 export const cardSurfaceClass = "rounded-xl border border-brand-border bg-brand-secondary/60";
+
+/**
+ * Shared hover "depth" treatment for card surfaces sitewide — a slight
+ * lift plus a soft cyan-tinted glow, matching the feel already used on
+ * the portfolio mockup cards. Append after `cardSurfaceClass` (and any
+ * per-card padding) so cards read as touchable, not just decorated
+ * rectangles, when the pointer is over them.
+ */
+export const cardHoverGlowClass =
+  "transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent-2/40 hover:shadow-[0_20px_45px_-28px_rgba(34,211,238,0.35)]";

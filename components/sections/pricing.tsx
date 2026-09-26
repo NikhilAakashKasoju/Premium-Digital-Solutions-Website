@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Check } from "lucide-react";
 
 import { siteConfig, type PricingPlan } from "@/config/site";
-import { cn } from "@/lib/utils";
+import { cardHoverGlowClass, cn } from "@/lib/utils";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
@@ -13,6 +13,16 @@ import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
 
 const container = staggerContainer(0.1);
+
+const featureList: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+};
+
+const featureItem: Variants = {
+  hidden: { opacity: 0, x: -8 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
+};
 
 /**
  * "Pricing" plan grid. Every figure comes from `siteConfig.pricing`
@@ -51,8 +61,9 @@ function PricingCard({ plan }: { plan: PricingPlan }) {
       variants={fadeUpItem}
       className={cn(
         "relative flex flex-col rounded-xl border p-6 lg:p-8",
+        cardHoverGlowClass,
         plan.featured
-          ? "border-brand-accent-2/50 bg-brand-secondary/80 shadow-[0_24px_60px_-32px_rgba(34,211,238,0.35)]"
+          ? "border-brand-accent-2/50 bg-brand-secondary/80 shadow-[0_24px_60px_-32px_rgba(34,211,238,0.35)] hover:shadow-[0_28px_65px_-30px_rgba(34,211,238,0.45)]"
           : "border-brand-border bg-brand-secondary/60",
       )}
     >
@@ -72,14 +83,24 @@ function PricingCard({ plan }: { plan: PricingPlan }) {
         <p className="mt-1 text-xs text-brand-muted">{plan.priceNote}</p>
       </div>
 
-      <ul className="mt-6 flex-1 space-y-2.5">
+      <motion.ul
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+        variants={featureList}
+        className="mt-6 flex-1 space-y-2.5"
+      >
         {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2.5 text-sm text-brand-muted">
+          <motion.li
+            key={feature}
+            variants={featureItem}
+            className="flex items-start gap-2.5 text-sm text-brand-muted"
+          >
             <Check className="mt-0.5 size-4 shrink-0 text-brand-accent-2" aria-hidden />
             <span>{feature}</span>
-          </li>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
 
       <Link
         href={plan.cta.href}

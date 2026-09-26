@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Bot, Cpu, Handshake, Layers, Target, Zap, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type Differentiator } from "@/config/site";
-import { cardSurfaceClass, cn } from "@/lib/utils";
+import { cardHoverGlowClass, cardSurfaceClass, cn } from "@/lib/utils";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
@@ -44,7 +44,7 @@ export function WhyChooseUs() {
               <motion.div
                 key={item.title}
                 variants={fadeUpItem}
-                className={cn(cardSurfaceClass, "p-6 transition-colors hover:border-brand-muted")}
+                className={cn(cardSurfaceClass, cardHoverGlowClass, "p-6")}
               >
                 <IconBadge icon={Icon} />
 

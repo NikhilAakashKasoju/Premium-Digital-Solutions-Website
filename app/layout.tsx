@@ -6,6 +6,7 @@ import { MotionConfig } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import "./globals.css";
 
 // Centralized in siteConfig.seo (config/site.ts) per the brief — this
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <Footer />
+          <MobileStickyCta />
         </MotionConfig>
       </body>
     </html>

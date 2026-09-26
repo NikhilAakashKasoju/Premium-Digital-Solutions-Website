@@ -36,7 +36,7 @@ export function FinalCta() {
           />
 
           <div className="relative">
-            <h2 className="mx-auto max-w-2xl text-h2 font-semibold text-balance text-brand-foreground lg:text-h1">
+            <h2 className="mx-auto max-w-2xl text-h2 font-bold text-balance text-brand-foreground lg:text-h1">
               {heading}
             </h2>
 

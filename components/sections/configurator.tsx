@@ -85,7 +85,7 @@ export function Configurator() {
                   {isSelected && (
                     <motion.span
                       layoutId="configurator-active-option"
-                      className="absolute inset-0 rounded-lg bg-brand-accent/15 ring-1 ring-inset ring-brand-accent/40"
+                      className="absolute inset-0 rounded-lg bg-brand-accent/15 shadow-[0_0_28px_-6px_rgba(124,107,255,0.65)] ring-1 ring-inset ring-brand-accent-vivid/50"
                       transition={{ type: "spring", stiffness: 400, damping: 35 }}
                     />
                   )}

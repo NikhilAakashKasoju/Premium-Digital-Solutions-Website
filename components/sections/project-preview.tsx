@@ -21,14 +21,17 @@ import { PreviewCalendar } from "@/components/sections/preview-calendar";
  */
 export function ProjectPreview({ project }: { project: PortfolioProject }) {
   return (
-    <WindowFrame title={project.previewTitle} className="min-h-[20rem] gap-5">
+    <WindowFrame
+      title={project.previewTitle}
+      className={cn("gap-5", project.screenshot ? "min-h-[26rem]" : "min-h-[20rem]")}
+    >
       {project.screenshot ? (
         <div className="relative -mx-5 -mb-5 mt-1 flex-1 overflow-hidden rounded-b-xl">
           <Image
             src={project.screenshot.src}
             alt={project.screenshot.alt}
             fill
-            sizes="(min-width: 640px) 50vw, 100vw"
+            sizes="(min-width: 1024px) 66vw, (min-width: 640px) 100vw, 100vw"
             className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
           />
         </div>

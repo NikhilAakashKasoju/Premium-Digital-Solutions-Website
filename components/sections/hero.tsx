@@ -51,7 +51,7 @@ export function Hero() {
 
           <motion.h1
             variants={item}
-            className="mt-6 text-h1 font-semibold text-balance text-brand-foreground lg:text-display"
+            className="mt-6 text-h1 font-bold text-balance text-brand-foreground lg:text-display"
           >
             {headline}
           </motion.h1>

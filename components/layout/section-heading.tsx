@@ -17,7 +17,7 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-2xl", className)}>
-      <h2 className="text-h2 font-semibold text-brand-foreground">{title}</h2>
+      <h2 className="text-h2 font-bold text-brand-foreground">{title}</h2>
       <p className="mt-4 text-lead text-brand-muted">{description}</p>
     </div>
   );

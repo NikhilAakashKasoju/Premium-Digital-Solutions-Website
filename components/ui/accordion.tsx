@@ -39,7 +39,10 @@ export function Accordion({ items, className }: { items: readonly AccordionItem[
         const panelId = `${baseId}-panel-${index}`;
 
         return (
-          <div key={item.question}>
+          <div
+            key={item.question}
+            className={cn("transition-colors duration-300", isOpen && "bg-brand-accent/[0.06]")}
+          >
             <h3>
               <button
                 type="button"
@@ -48,7 +51,7 @@ export function Accordion({ items, className }: { items: readonly AccordionItem[
                 aria-controls={panelId}
                 onClick={() => setOpenIndex(isOpen ? null : index)}
                 className={cn(
-                  "flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-sm font-medium text-brand-foreground transition-colors hover:text-brand-accent-2 sm:px-6 sm:text-base",
+                  "flex w-full items-center justify-between gap-4 px-5 py-5 text-left text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-accent/[0.04] hover:text-brand-accent-2 sm:px-6 sm:text-base",
                   FOCUS_RING,
                 )}
               >
@@ -75,7 +78,14 @@ export function Accordion({ items, className }: { items: readonly AccordionItem[
                   transition={{ duration: 0.25, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <p className="px-5 pb-5 text-sm leading-relaxed text-brand-muted sm:px-6">{item.answer}</p>
+                  <motion.p
+                    initial={{ y: -6, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.2, delay: 0.05 }}
+                    className="px-5 pb-5 text-sm leading-relaxed text-brand-muted sm:px-6"
+                  >
+                    {item.answer}
+                  </motion.p>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -10,8 +10,12 @@
  * ------------------------------------------------------------------ */
 :root {
   /* Brand surfaces */
-  --brand-bg: #0b1020;
-  --brand-bg-secondary: #111827;
+  /* Deepened from the original #0b1020 — a darker page background reads
+     as more premium and gives card surfaces (--brand-bg-secondary) more
+     visual separation to sit on top of, without touching the card color
+     itself. */
+  --brand-bg: #070a14;
+  --brand-bg-secondary: #121a2c;
   --brand-bg-light: #f8fafc;
 
   /* Brand text */
@@ -27,6 +31,13 @@
      (~5.4:1) while every other use of the accent (icons, links, focus
      rings, the hero glow) stays exactly on-brand at #635bff. */
   --brand-accent-button: #5147ff;
+  /* Punchier, more saturated reads of the two accents — reserved for
+     emphasis moments only (badges, animated stat numbers, active/selected
+     states). Everyday icons, links, and focus rings keep the calmer base
+     accents above; this keeps the brand identity intact while giving a
+     handful of "look here" moments more pop. */
+  --brand-accent-vivid: #7c6bff;
+  --brand-accent-2-vivid: #17eaff;
 
   /* Structure */
   --brand-border: #263044;
@@ -87,6 +98,8 @@
   --color-brand-accent: var(--brand-accent);
   --color-brand-accent-2: var(--brand-accent-2);
   --color-brand-accent-button: var(--brand-accent-button);
+  --color-brand-accent-vivid: var(--brand-accent-vivid);
+  --color-brand-accent-2-vivid: var(--brand-accent-2-vivid);
   --color-brand-border: var(--brand-border);
 
   --color-background: var(--background);
@@ -114,21 +127,24 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Large, confident type scale */
-  --text-display: 4.5rem;
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.02em;
+  /* Large, confident type scale — sized and tightened up a notch from
+     the original pass for a more assertive, agency-style presence at
+     the top of the page. */
+  --text-display: 5.25rem;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
 
-  --text-h1: 3rem;
-  --text-h1--line-height: 1.1;
-  --text-h1--letter-spacing: -0.02em;
+  --text-h1: 3.5rem;
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.03em;
 
-  --text-h2: 2.25rem;
-  --text-h2--line-height: 1.15;
-  --text-h2--letter-spacing: -0.01em;
+  --text-h2: 2.5rem;
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
 
-  --text-h3: 1.5rem;
-  --text-h3--line-height: 1.25;
+  --text-h3: 1.625rem;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
 
   --text-h4: 1.25rem;
   --text-h4--line-height: 1.35;

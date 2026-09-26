@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 import { PORTFOLIO_PROJECTS } from "@/config/portfolio";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeading } from "@/components/layout/section-heading";
@@ -25,10 +26,14 @@ export function Portfolio() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={container}
-          className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+          className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-flow-row-dense lg:grid-cols-3 lg:gap-8"
         >
           {PORTFOLIO_PROJECTS.map((project) => (
-            <motion.div key={project.slug} variants={fadeUpItem}>
+            <motion.div
+              key={project.slug}
+              variants={fadeUpItem}
+              className={cn(!project.isConcept && "md:col-span-2 lg:col-span-2")}
+            >
               <ProjectCard project={project} />
             </motion.div>
           ))}
