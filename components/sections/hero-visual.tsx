@@ -1,15 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { AppWindow, Bot, Building2, Globe, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type WhatWeBuildCard } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-// Keyed by the exact icon-name union (not `string`) so this object only
-// type-checks if every icon `WhatWeBuildCard` can name has an entry — no
-// runtime fallback needed for a "missing icon" case that can't happen.
 const serviceIcons: Record<WhatWeBuildCard["icon"], LucideIcon> = {
   Globe,
   AppWindow,
@@ -17,28 +14,36 @@ const serviceIcons: Record<WhatWeBuildCard["icon"], LucideIcon> = {
   Bot,
 };
 
-// One entry per `siteConfig.whatWeBuild` item, in the same order: where its
-// floating card sits around the centered hero text, and where the dashed
-// connector line reaching it should end (in the same 0–100 viewBox space
-// the card positions are expressed in, so the two stay visually in sync).
-// `loop` tunes that connector's meander — see `beePath` below — varied per
-// card so the four don't all read as one shape rotated four ways.
+// `away` is where each card drifts to as the hero scrolls out of view —
+// outward from its own corner and slightly rotated, so the cloud reads as
+// scattering apart rather than sliding uniformly in one direction.
 const CARD_LAYOUT = [
-  { cardClass: "left-[0%] top-[2%]", line: { x: 14, y: 14 }, loop: { t: 0.4, wobble: 10, sweep: 1 as const } },
-  { cardClass: "right-[0%] top-[8%]", line: { x: 86, y: 20 }, loop: { t: 0.52, wobble: -9, sweep: 0 as const } },
-  { cardClass: "left-[2%] bottom-[4%]", line: { x: 16, y: 86 }, loop: { t: 0.46, wobble: -11, sweep: 0 as const } },
-  { cardClass: "right-[2%] bottom-[0%]", line: { x: 84, y: 92 }, loop: { t: 0.58, wobble: 9, sweep: 1 as const } },
+  {
+    cardClass: "left-[0%] top-[2%]",
+    line: { x: 14, y: 14 },
+    loop: { t: 0.4, wobble: 10, sweep: 1 as const },
+    away: { x: -70, y: -55, rotate: -10 },
+  },
+  {
+    cardClass: "right-[0%] top-[8%]",
+    line: { x: 86, y: 20 },
+    loop: { t: 0.52, wobble: -9, sweep: 0 as const },
+    away: { x: 70, y: -55, rotate: 10 },
+  },
+  {
+    cardClass: "left-[2%] bottom-[4%]",
+    line: { x: 16, y: 86 },
+    loop: { t: 0.46, wobble: -11, sweep: 0 as const },
+    away: { x: -70, y: 65, rotate: 10 },
+  },
+  {
+    cardClass: "right-[2%] bottom-[0%]",
+    line: { x: 84, y: 92 },
+    loop: { t: 0.58, wobble: 9, sweep: 1 as const },
+    away: { x: 70, y: 65, rotate: -10 },
+  },
 ] as const;
 
-/**
- * Builds a wandering, looped connector from the centered headline (50, 50)
- * out to a floating card at (x2, y2) — a lazy curved approach, a small
- * loop-de-loop partway along, then a curved swoop into the card, rather
- * than a ruler-straight line. `wobble` (signed) is how far off the direct
- * route the loop sits and which side it curves toward; `t` is how far
- * along the route the loop sits (0–1); `sweep` picks which way the loop
- * winds.
- */
 function beePath(x2: number, y2: number, { t, wobble, sweep }: { t: number; wobble: number; sweep: 0 | 1 }) {
   const x1 = 50;
   const y1 = 50;
@@ -47,17 +52,12 @@ function beePath(x2: number, y2: number, { t, wobble, sweep }: { t: number; wobb
   const dist = Math.hypot(dx, dy) || 1;
   const ux = dx / dist;
   const uy = dy / dist;
-  // Perpendicular unit vector — offsetting along this is what pushes the
-  // loop and the curve's bulges off the direct line.
   const px = -uy;
   const py = ux;
 
   const loopRadius = 4.5;
   const loopX = x1 + dx * t + px * wobble;
   const loopY = y1 + dy * t + py * wobble;
-  // The loop only touches the route at one point — where the path both
-  // enters and exits it — which is what reads as a loop rather than a
-  // detour around an obstacle.
   const loopEnterX = loopX - ux * loopRadius;
   const loopEnterY = loopY - uy * loopRadius;
   const loopFarX = loopX + ux * loopRadius;
@@ -79,17 +79,6 @@ function beePath(x2: number, y2: number, { t, wobble, sweep }: { t: number; wobb
   ].join(" ");
 }
 
-/**
- * Hero "service cloud": the four `whatWeBuild` practice areas floating as
- * cards around the centered headline, each linked back to it by a dashed
- * connector — a hub-and-spoke composition rather than the hero copy
- * competing with a separate side visual.
- *
- * Deliberately two different compositions rather than one shrunk to fit
- * both: absolutely-positioned floating cards with dashed connectors on
- * large screens, and a plain static grid below `lg`, where the floating
- * layout would just overlap the (also centered, full-width) hero copy.
- */
 export function HeroServiceCards() {
   return <DesktopServiceCloud className="hidden lg:block" />;
 }
@@ -119,20 +108,83 @@ export function HeroServiceListCompact({ className }: { className?: string }) {
   );
 }
 
+/**
+ * The floating card cloud doubles as the hero's scroll-exit animation: as
+ * the visitor scrolls the hero out of view, the cards drift apart toward
+ * their own corners (and the whole cloud + dashed "flight path" lines fade
+ * out) instead of just scrolling off statically.
+ *
+ * This is driven by a plain `scroll`/`resize` listener + direct style
+ * writes on refs (rAF-throttled), rather than Framer Motion's
+ * `useScroll`/`useTransform` bound through the `style` prop — in this
+ * project's exact Next/React/Framer Motion combination, a MotionValue fed
+ * into `style` from an *externally* driven source (scroll) computes
+ * correctly but never actually gets re-applied to the DOM after the first
+ * paint (confirmed by instrumenting the motion value directly: it updates
+ * every frame, the element's inline style does not). Framer's own
+ * mount-triggered `animate`/`whileInView` animations elsewhere on this
+ * card (entrance fade, idle bob) are a different, self-contained code path
+ * and are unaffected, so they stay as-is. Manual refs sidestep the issue
+ * entirely and are simple enough to be worth keeping even if a future
+ * Framer Motion upgrade fixes the underlying bug.
+ */
 function DesktopServiceCloud({ className }: { className?: string }) {
   const reduceMotion = useReducedMotion();
   const services = siteConfig.whatWeBuild;
 
+  const cloudRef = useRef<HTMLDivElement>(null);
+  const card0Ref = useRef<HTMLDivElement>(null);
+  const card1Ref = useRef<HTMLDivElement>(null);
+  const card2Ref = useRef<HTMLDivElement>(null);
+  const card3Ref = useRef<HTMLDivElement>(null);
+  const cardRefs = [card0Ref, card1Ref, card2Ref, card3Ref];
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    let frame = 0;
+
+    const applyProgress = () => {
+      const container = cloudRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const total = rect.height || 1;
+      // 0 when the cloud's top reaches the viewport top, 1 once its bottom
+      // has scrolled past the viewport top — i.e. "scrolled through the hero".
+      const raw = -rect.top / total;
+      const progress = Math.min(Math.max(raw, 0), 1);
+
+      const opacity = Math.max(0, Math.min(1, progress <= 0.7 ? 1 : 1 - (progress - 0.7) / 0.3));
+      container.style.opacity = String(opacity);
+
+      CARD_LAYOUT.forEach((card, i) => {
+        const el = cardRefs[i].current;
+        if (!el) return;
+        const { x, y, rotate } = card.away;
+        el.style.transform = `translate(${x * progress}px, ${y * progress}px) rotate(${rotate * progress}deg)`;
+      });
+    };
+
+    const onScrollOrResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(applyProgress);
+    };
+
+    applyProgress();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduceMotion]);
+
   return (
-    <div className={cn("pointer-events-none absolute inset-0", className)} aria-hidden>
-      {/* Dashed connectors from the centered headline out to each floating
-          card — purely illustrative, so the endpoints only approximate the
-          cards' actual positions rather than wiring into their exact edges. */}
-      {/* Note: these stay plain `<path>` elements, not `motion.path` — Framer
-          Motion animates SVG `pathLength` by writing its own stroke-dasharray/
-          stroke-dashoffset, which would silently overwrite (and cancel) the
-          dashed pattern below. The fade-in is animated on the wrapping
-          `motion.svg` instead, which doesn't touch dasharray. */}
+    <div ref={cloudRef} className={cn("pointer-events-none absolute inset-0", className)} aria-hidden>
       <motion.svg
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
@@ -165,10 +217,12 @@ function DesktopServiceCloud({ className }: { className?: string }) {
         const Icon = serviceIcons[service.icon];
         const layout = CARD_LAYOUT[i];
         return (
-          <FloatCard key={service.slug} index={i} reduceMotion={!!reduceMotion} className={cn(layout.cardClass, "w-48")}>
-            <CardChrome label={service.title} icon={Icon} />
-            <p className="mt-2 text-[11px] leading-snug text-brand-muted">{service.description}</p>
-          </FloatCard>
+          <div key={service.slug} ref={cardRefs[i]} className={cn("absolute", layout.cardClass, "w-48")}>
+            <FloatCard index={i} reduceMotion={!!reduceMotion}>
+              <CardChrome label={service.title} icon={Icon} />
+              <p className="mt-2 text-[11px] leading-snug text-brand-muted">{service.description}</p>
+            </FloatCard>
+          </div>
         );
       })}
     </div>
@@ -186,31 +240,26 @@ function CardChrome({ label, icon: Icon }: { label: string; icon: LucideIcon }) 
   );
 }
 
+/**
+ * Owns only the mount-in entrance fade and the idle bob — positioning and
+ * the scroll-linked scatter transform live on the wrapping ref'd element in
+ * `DesktopServiceCloud`, so this never fights that wrapper over which
+ * element owns `transform`/`y`.
+ */
 function FloatCard({
   index,
   reduceMotion,
-  className,
   children,
 }: {
   index: number;
   reduceMotion: boolean;
-  className?: string;
   children: ReactNode;
 }) {
-  // Important: the two motion.div layers below always render, for every
-  // value of `reduceMotion` — only the *animation props* branch on it.
-  // `useReducedMotion()` resolves differently on the server (always
-  // "no preference") than on a client whose OS has the reduced-motion
-  // flag set, so branching the DOM *shape* itself on its value causes
-  // a server/client markup mismatch (React error #418) the moment a
-  // visitor has that OS setting on. Varying only style/animation props
-  // is safe because Framer Motion applies those after hydration.
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.15 * index, ease: "easeOut" }}
-      className={cn("absolute", className)}
     >
       <motion.div
         animate={reduceMotion ? { y: 0 } : { y: [0, -8, 0] }}

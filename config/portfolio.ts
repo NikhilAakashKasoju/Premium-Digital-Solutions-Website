@@ -1,9 +1,13 @@
 /**
  * "Selected Work" portfolio data.
  *
- * Two real, shipped, solo-built projects lead this list (`isConcept:
+ * Three real, shipped, solo-built projects lead this list (`isConcept:
  * false`, each with a real `screenshot` and a `cta` linking out to the
  * live site) — `ProjectCard` renders a "Real Project" label for these.
+ * Two of them (Music Gurukula and Gurukula Tracker) are the public
+ * website and the internal admin app built for the same music school —
+ * kept as separate entries since they're separate deliverables, not
+ * one project shown twice.
  * Everything after them is a CONCEPT PROJECT: an illustrative case
  * study, not a real client, rendered with a "Concept Project" label
  * instead. This file is the single place that would change to swap
@@ -106,9 +110,24 @@ export const PORTFOLIO_PROJECTS: readonly PortfolioProject[] = [
   {
     slug: "music-gurukula",
     name: "Music Gurukula",
+    industry: "Music & Dance Education",
+    description:
+      "A public school website for a Bengaluru-based Indian classical music and dance academy — a warm, story-led home for four disciplines (Hindustani vocals, tabla and flute, plus Bharatanatyam), with teacher profiles, student stories and a program-matching inquiry form.",
+    tags: ["Marketing website", "Program inquiry form", "Solo build"],
+    isConcept: false,
+    previewTitle: "Music Gurukula",
+    screenshot: {
+      src: "/work/music-gurukula-website.jpg",
+      alt: "The Music Gurukula homepage, showing its 'Rooted in tradition, growing with you' hero",
+    },
+    cta: { label: "Visit the live site", href: "https://music-gurkula-website.vercel.app/", external: true },
+  },
+  {
+    slug: "gurukula-tracker",
+    name: "Gurukula Tracker",
     industry: "Education / School Administration",
     description:
-      "An admin dashboard for a music school run on the Gurukula mentorship model — one place to track student enrollment, subscription renewals and payments, so instructors spend less time on admin and more time teaching.",
+      "An admin dashboard for the same music school — one place to track student enrollment, subscription renewals and payments, so instructors spend less time on admin and more time teaching.",
     tags: ["Student management", "Subscriptions & payments", "Solo build"],
     isConcept: false,
     previewTitle: "Gurukula Tracker",

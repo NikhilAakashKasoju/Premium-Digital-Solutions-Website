@@ -43,9 +43,10 @@ export type WorkflowNode = {
   label: string;
 };
 
-export type WebsiteBlock = {
+export type WebsiteHighlight = {
+  /** Icon name, resolved against a lookup map in the renderer. */
+  icon: "Zap" | "ShieldCheck" | "Rocket";
   label: string;
-  size: "sm" | "md" | "lg";
 };
 
 /**
@@ -54,7 +55,12 @@ export type WebsiteBlock = {
  * Several options below reuse the same kind with different data.
  */
 export type PreviewSpec =
-  | { kind: "website"; blocks: readonly WebsiteBlock[] }
+  | {
+      kind: "website";
+      nav: readonly string[];
+      hero: { eyebrow: string; headline: string; subtext: string; primaryCta: string; secondaryCta: string };
+      highlights: readonly WebsiteHighlight[];
+    }
   | { kind: "grid"; items: readonly ProductTile[] }
   | { kind: "calendar"; slots: readonly CalendarSlot[] }
   | { kind: "chat"; messages: readonly ChatMessage[] }
@@ -87,11 +93,18 @@ export const CONFIGURATOR_OPTIONS: readonly ConfiguratorOption[] = [
     previewTitle: "yourcompany.com",
     preview: {
       kind: "website",
-      blocks: [
-        { label: "Nav", size: "sm" },
-        { label: "Hero headline", size: "lg" },
-        { label: "Get in touch", size: "sm" },
-        { label: "Services grid", size: "md" },
+      nav: ["Services", "Work", "Contact"],
+      hero: {
+        eyebrow: "Locally trusted",
+        headline: "Grow your business online.",
+        subtext: "A fast, modern site that turns visitors into customers.",
+        primaryCta: "Get a quote",
+        secondaryCta: "See our work",
+      },
+      highlights: [
+        { icon: "Zap", label: "Loads instantly" },
+        { icon: "ShieldCheck", label: "Secure by default" },
+        { icon: "Rocket", label: "Ranks on Google" },
       ],
     },
   },

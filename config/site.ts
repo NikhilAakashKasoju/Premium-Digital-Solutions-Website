@@ -29,12 +29,23 @@ export type WhatWeBuildCard = {
   cta: { label: string; href: string };
 };
 
+export type PainPoint = {
+  label: string;
+  /** How urgent this one reads visually — the "What We Build" section
+   *  escalates tone down the list, from a mundane annoyance to a real
+   *  cost, before resolving into the "so we build you one system
+   *  instead" solution beat. */
+  tone: "neutral" | "warning" | "urgent";
+};
+
 export type ProcessStage = {
   number: string;
   /** Icon name, resolved against a lookup map at the component that renders it. */
   icon: "Search" | "PenTool" | "Code2" | "Rocket";
   title: string;
   description: string;
+  /** 2–3 concrete, checklist-style specifics shown alongside the stage's animated visual. */
+  highlights: readonly string[];
 };
 
 export type Differentiator = {
@@ -200,6 +211,34 @@ export const siteConfig = {
     "Cloud Solutions",
   ],
 
+  /**
+   * "What We Build" section now opens with the problem before the pitch:
+   * the daily friction a growing business actually runs into (left),
+   * escalating from a mundane annoyance to a real cost, then a short
+   * "so we build you one system instead" solution beat, before the
+   * practice-area cards below answer with specifics.
+   */
+  whatWeBuildProblem: {
+    eyebrow: "The daily reality",
+    title: "Running a growing business shouldn't feel this scattered.",
+    description:
+      "Most teams end up duct-taping together a website, a spreadsheet and three different apps — and still lose hours a week to things that should just work.",
+    painPoints: [
+      { label: "Leads still tracked in a spreadsheet", tone: "neutral" },
+      { label: "Website is slow, outdated, or hard to update", tone: "neutral" },
+      { label: "Support scattered across WhatsApp, email and calls", tone: "warning" },
+      { label: "Copying the same data between three different tools", tone: "warning" },
+      { label: "No one in-house to fix it, and agencies are too slow", tone: "urgent" },
+    ],
+  } satisfies { eyebrow: string; title: string; description: string; painPoints: readonly PainPoint[] },
+
+  whatWeBuildSolution: {
+    eyebrow: "The fix",
+    title: "So we build you one system instead.",
+    description:
+      "A single, connected platform — website, software and automation — designed around how your business actually works, not the other way around.",
+  },
+
   /** "What We Build" section: one card per practice area. */
   whatWeBuild: [
     {
@@ -263,24 +302,28 @@ export const siteConfig = {
       icon: "Search",
       title: "Discover",
       description: "Understand the business, users and goals.",
+      highlights: ["Stakeholder interviews", "Competitor & market scan", "Success metrics defined"],
     },
     {
       number: "02",
       icon: "PenTool",
       title: "Design",
       description: "Create the experience and technical architecture.",
+      highlights: ["Wireframes & user flows", "Visual design system", "Technical architecture"],
     },
     {
       number: "03",
       icon: "Code2",
       title: "Build",
       description: "Develop, test and integrate the solution.",
+      highlights: ["Iterative development", "Code review & testing", "Continuous integration"],
     },
     {
       number: "04",
       icon: "Rocket",
       title: "Launch & Grow",
       description: "Deploy, monitor and continuously improve.",
+      highlights: ["Production deployment", "Analytics & monitoring", "Ongoing iteration"],
     },
   ] satisfies ProcessStage[],
 

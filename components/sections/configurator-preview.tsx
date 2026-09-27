@@ -1,12 +1,18 @@
-import { Send, ShoppingCart } from "lucide-react";
+import { ImageIcon, Rocket, Send, ShieldCheck, ShoppingCart, Zap, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { ConfiguratorOption, PreviewRow } from "@/config/configurator-data";
+import type { ConfiguratorOption, PreviewRow, WebsiteHighlight } from "@/config/configurator-data";
 import { AnimatedBarChart } from "@/components/ui/animated-bar-chart";
 import { AnimatedStatValue } from "@/components/ui/animated-stat-value";
 import { WindowFrame } from "@/components/ui/window-frame";
 import { PreviewCalendar } from "@/components/sections/preview-calendar";
 import { PreviewChat } from "@/components/sections/preview-chat";
+
+const highlightIcons: Record<WebsiteHighlight["icon"], LucideIcon> = {
+  Zap,
+  ShieldCheck,
+  Rocket,
+};
 
 /**
  * The framed "device" shell every preview renders inside — a window
@@ -16,7 +22,10 @@ import { PreviewChat } from "@/components/sections/preview-chat";
  */
 export function ConfiguratorPreview({ option }: { option: ConfiguratorOption }) {
   return (
-    <WindowFrame title={option.previewTitle} className="min-h-[22rem] md:min-h-[26rem] md:p-6">
+    <WindowFrame
+      title={option.previewTitle}
+      className="min-h-[22rem] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)] md:min-h-[26rem] md:p-6"
+    >
       <div className="flex-1 pt-5">
         <PreviewBody option={option} />
       </div>
@@ -28,30 +37,64 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
   const { preview } = option;
 
   switch (preview.kind) {
-    case "website":
+    case "website": {
+      const { nav, hero, highlights } = preview;
       return (
-        <div className="space-y-2.5">
-          {preview.blocks.map((block, i) =>
-            block.label.toLowerCase().includes("grid") ? (
-              <div key={i} className="grid grid-cols-3 gap-2">
-                {[0, 1, 2].map((n) => (
-                  <div key={n} className="h-10 rounded-md bg-brand-border/60" />
-                ))}
-              </div>
-            ) : (
-              <div
-                key={i}
-                className={cn(
-                  "rounded-md bg-brand-border/60",
-                  block.size === "lg" && "h-20",
-                  block.size === "md" && "h-12",
-                  block.size === "sm" && "h-3 w-1/3",
-                )}
-              />
-            ),
-          )}
+        <div className="flex flex-col gap-4">
+          {/* Nav — a believable little site header, not a placeholder bar. */}
+          <div className="flex items-center justify-between border-b border-brand-border pb-3">
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-brand-accent-2" aria-hidden />
+              <span className="text-xs font-semibold text-brand-foreground">yourbrand</span>
+            </span>
+            <div className="hidden items-center gap-3.5 sm:flex">
+              {nav.map((item) => (
+                <span key={item} className="text-xs text-brand-muted">
+                  {item}
+                </span>
+              ))}
+            </div>
+            <span className="rounded-md bg-brand-accent-button px-2.5 py-1.5 text-[11px] font-medium text-brand-foreground">
+              Contact
+            </span>
+          </div>
+
+          {/* Hero — real headline copy and a colored CTA in place of gray
+              skeleton rectangles, so the very first option a visitor sees
+              already looks like a finished site, not a wireframe. */}
+          <div className="relative overflow-hidden rounded-lg border border-brand-border bg-gradient-to-br from-brand-accent/10 via-transparent to-brand-accent-2/10 p-5 text-center">
+            <p className="text-[10px] font-semibold tracking-wide text-brand-accent-2 uppercase">{hero.eyebrow}</p>
+            <p className="mt-2 text-base font-bold text-balance text-brand-foreground sm:text-lg">{hero.headline}</p>
+            <p className="mx-auto mt-2 max-w-[15rem] text-xs text-brand-muted">{hero.subtext}</p>
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <span className="rounded-md bg-brand-accent-button px-3 py-1.5 text-xs font-semibold text-brand-foreground shadow-[0_10px_24px_-10px_rgba(99,91,255,0.65)]">
+                {hero.primaryCta}
+              </span>
+              <span className="rounded-md border border-brand-border px-3 py-1.5 text-xs font-medium text-brand-muted">
+                {hero.secondaryCta}
+              </span>
+            </div>
+          </div>
+
+          {/* Trust highlights — icon + label in place of an empty "services
+              grid" block. */}
+          <div className="grid grid-cols-3 gap-2">
+            {highlights.map((highlight) => {
+              const Icon = highlightIcons[highlight.icon];
+              return (
+                <div
+                  key={highlight.label}
+                  className="flex flex-col items-center gap-1.5 rounded-md border border-brand-border py-3 text-center transition-colors hover:border-brand-accent-2/50"
+                >
+                  <Icon className="size-4 text-brand-accent-2" aria-hidden />
+                  <span className="text-[10px] leading-tight text-brand-muted">{highlight.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
+    }
 
     case "grid":
       return (
@@ -65,7 +108,9 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
               key={item.label}
               className="rounded-lg border border-brand-border p-2.5 transition-colors hover:border-brand-accent-2/50"
             >
-              <div className="aspect-square rounded-md bg-brand-border/60" />
+              <div className="flex aspect-square items-center justify-center rounded-md bg-brand-border/60">
+                <ImageIcon className="size-5 text-brand-muted/50" aria-hidden />
+              </div>
               <p className="mt-2 truncate text-xs text-brand-foreground">{item.label}</p>
               <p className="text-xs font-medium text-brand-accent-2">{item.price}</p>
             </div>
