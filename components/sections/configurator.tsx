@@ -40,10 +40,10 @@ const optionIcons: Record<ConfiguratorOption["icon"], LucideIcon> = {
   Code2,
 };
 
-// How long each option stays on screen during the unattended auto-cycle,
-// in milliseconds — slow enough to actually read the preview, brisk enough
-// that a scrolling visitor notices it moving before they've scrolled past.
-const AUTO_CYCLE_MS = 3200;
+// How long each option stays on screen during the auto-cycle, in
+// milliseconds — fast enough that the demo always feels alive, whether or
+// not a visitor has clicked into it.
+const AUTO_CYCLE_MS = 1500;
 
 /**
  * Interactive product demo: pick a project type, see a live-feeling
@@ -52,15 +52,14 @@ const AUTO_CYCLE_MS = 3200;
  * component — only the `preview` field the selected option carries
  * would change from static data to a fetch result.
  *
- * While the section is in view and nobody has touched it yet, the options
- * cycle themselves — a static "pick one" list reads as inert until someone
- * clicks it, but a preview that's already changing on its own catches the
- * eye of someone just scrolling past. The moment a visitor clicks any
- * option, the auto-cycle stops for good — their choice, not the demo's.
+ * The options auto-cycle continuously while the section is in view —
+ * clicking one jumps straight to it (an immediate, responsive override),
+ * but it never permanently stops the cycle: it just keeps advancing from
+ * wherever the visitor left it. Nothing here pauses on hover either — a
+ * demo that can go quiet and stay quiet reads as broken, not restrained.
  */
 export function Configurator() {
   const [selectedId, setSelectedId] = useState<ConfiguratorOptionId>(CONFIGURATOR_OPTIONS[0].id);
-  const [userInteracted, setUserInteracted] = useState(false);
   const selectedOption = CONFIGURATOR_OPTIONS.find((option) => option.id === selectedId) ?? CONFIGURATOR_OPTIONS[0];
 
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -68,7 +67,7 @@ export function Configurator() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (userInteracted || reduceMotion || !isInView) return;
+    if (reduceMotion || !isInView) return;
 
     const interval = setInterval(() => {
       setSelectedId((current) => {
@@ -78,10 +77,9 @@ export function Configurator() {
     }, AUTO_CYCLE_MS);
 
     return () => clearInterval(interval);
-  }, [userInteracted, reduceMotion, isInView]);
+  }, [reduceMotion, isInView]);
 
   const handleSelect = (id: ConfiguratorOptionId) => {
-    setUserInteracted(true);
     setSelectedId(id);
   };
 
@@ -177,13 +175,17 @@ export function Configurator() {
                   </span>
                 </div>
 
+                {/* Crossfade kept shorter than AUTO_CYCLE_MS (0.18s each way vs.
+                    a 1.5s tick) so every switch has a moment to actually
+                    settle before the next one starts, instead of the
+                    transitions running back-to-back with no rest in between. */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={selectedOption.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
                   >
                     <ConfiguratorPreview option={selectedOption} />
                   </motion.div>

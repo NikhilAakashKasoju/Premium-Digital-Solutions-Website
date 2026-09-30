@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { AppWindow, Bot, Building2, Check, Globe, type LucideIcon } from "lucide-react";
 
 import { siteConfig, type PainPoint, type WhatWeBuildCard } from "@/config/site";
@@ -38,6 +38,25 @@ const toneDot: Record<PainPoint["tone"], string> = {
 };
 
 const container = staggerContainer(0.1);
+
+// A quick, punchy spring (high stiffness, low damping) rather than a
+// duration-based ease — that's what makes the settle read as a physical
+// impact overshooting slightly before it rests, not a scripted animation.
+const STAMP_SPRING = { type: "spring", stiffness: 450, damping: 14, mass: 0.6 } as const;
+
+/**
+ * "Stamp onto the screen": each bubble starts oversized and crooked, like
+ * it's still being pressed down, then snaps to its true size and tilt in
+ * one quick spring — landing with a little overshoot instead of drifting
+ * up into place. `entryRotate` is the extra tilt it lands FROM, on top of
+ * whatever static lean the bubble rests at (see PainPointBubbles below).
+ */
+function stampVariants(entryRotate: number): Variants {
+  return {
+    hidden: { opacity: 0, scale: 2.3, rotate: entryRotate },
+    visible: { opacity: 1, scale: 1, rotate: 0, transition: STAMP_SPRING },
+  };
+}
 
 /**
  * "What We Build" now opens with the problem before the pitch: the daily
@@ -133,7 +152,16 @@ export function WhatWeBuild() {
  * The escalating cascade of daily friction, staggered into a loose,
  * hand-placed-looking column (alternating side + a slight rotation on
  * `sm` and up) rather than a tidy list — closer to how these things
- * actually pile up than a bullet list would read.
+ * actually pile up than a bullet list would read. Each bubble "stamps"
+ * onto the screen (see `stampVariants` above) rather than fading up.
+ *
+ * The static resting tilt (`sm:rotate-1`/`sm:-rotate-1`) lives on the
+ * plain outer `<li>`, and the stamp animation (scale + its own rotate)
+ * lives on the `motion.div` inside it — not both on one element. Framer
+ * Motion writes the `transform` CSS property directly once it's
+ * animating scale/rotate on a node, which would silently overwrite a
+ * Tailwind rotate class sitting on that same element; nesting them keeps
+ * the two transforms independent so the final tilt actually holds.
  */
 function PainPointBubbles({ points }: { points: readonly PainPoint[] }) {
   return (
@@ -144,21 +172,24 @@ function PainPointBubbles({ points }: { points: readonly PainPoint[] }) {
       variants={staggerContainer(0.12)}
       className="flex flex-col gap-3"
     >
-      {points.map((point, i) => (
-        <motion.li
-          key={point.label}
-          variants={fadeUpItem}
-          className={cn(
-            "max-w-sm rounded-xl border-l-4 bg-brand-secondary/60 px-4 py-3 text-sm text-brand-foreground shadow-[0_10px_24px_-16px_rgba(0,0,0,0.7)]",
-            toneBorder[point.tone],
-            i % 2 === 1 ? "sm:self-end sm:rotate-1" : "sm:self-start sm:-rotate-1",
-            point.tone === "urgent" && "font-medium",
-          )}
-        >
-          <span className={cn("mr-2 inline-block size-1.5 rounded-full align-middle", toneDot[point.tone])} aria-hidden />
-          {point.label}
-        </motion.li>
-      ))}
+      {points.map((point, i) => {
+        const reversed = i % 2 === 1;
+        return (
+          <li key={point.label} className={cn("max-w-sm", reversed ? "sm:self-end sm:rotate-1" : "sm:self-start sm:-rotate-1")}>
+            <motion.div
+              variants={stampVariants(reversed ? 9 : -9)}
+              className={cn(
+                "rounded-xl border-l-4 bg-brand-secondary/60 px-4 py-3 text-sm text-brand-foreground shadow-[0_10px_24px_-16px_rgba(0,0,0,0.7)]",
+                toneBorder[point.tone],
+                point.tone === "urgent" && "font-medium",
+              )}
+            >
+              <span className={cn("mr-2 inline-block size-1.5 rounded-full align-middle", toneDot[point.tone])} aria-hidden />
+              {point.label}
+            </motion.div>
+          </li>
+        );
+      })}
     </motion.ul>
   );
 }
