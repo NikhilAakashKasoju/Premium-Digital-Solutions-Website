@@ -97,8 +97,8 @@ export type Industry = {
 };
 
 export const siteConfig = {
-  name: "YOUR BRAND",
-  legalName: "YOUR BRAND",
+  name: "Corebound",
+  legalName: "Corebound",
   tagline: "Think. Build. Evolve.",
   description:
     "Premium digital solutions for businesses that need to move fast: websites, e-commerce, custom web applications, and AI-powered automation, built to a production-grade standard.",
@@ -174,9 +174,9 @@ export const siteConfig = {
   },
 
   socials: [
-    { label: "LinkedIn", href: "https://linkedin.com/company/your-brand", icon: "Linkedin" },
-    { label: "Instagram", href: "https://instagram.com/yourbrand", icon: "Instagram" },
-    { label: "YouTube", href: "https://youtube.com/@yourbrand", icon: "Youtube" },
+    { label: "LinkedIn", href: "https://linkedin.com/company/corebound", icon: "Linkedin" },
+    { label: "Instagram", href: "https://instagram.com/corebound", icon: "Instagram" },
+    { label: "YouTube", href: "https://youtube.com/@corebound", icon: "Youtube" },
   ] satisfies SocialLink[],
 
   /** Solid brand color for the browser chrome (mobile address bar, PWA splash). */
@@ -188,7 +188,7 @@ export const siteConfig = {
    * `metadata`, which should override these rather than restate them).
    */
   seo: {
-    title: "Digital Solutions for Modern Businesses | YOUR BRAND",
+    title: "Digital Solutions for Modern Businesses | Corebound",
     description:
       "We build high-performance websites, web applications, business software and AI-powered automation for growing businesses.",
     keywords: [

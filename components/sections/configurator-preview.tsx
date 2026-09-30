@@ -45,7 +45,7 @@ function PreviewBody({ option }: { option: ConfiguratorOption }) {
           <div className="flex items-center justify-between border-b border-brand-border pb-3">
             <span className="flex items-center gap-1.5">
               <span className="size-2 rounded-full bg-brand-accent-2" aria-hidden />
-              <span className="text-xs font-semibold text-brand-foreground">yourbrand</span>
+              <span className="text-xs font-semibold text-brand-foreground">corebound</span>
             </span>
             <div className="hidden items-center gap-3.5 sm:flex">
               {nav.map((item) => (

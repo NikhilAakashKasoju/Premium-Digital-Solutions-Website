@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import { useEffect, useId, useState } from "react";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { Container } from "@/components/layout/container";
 import { NavLinks } from "@/components/layout/nav-links";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { buttonVariants } from "@/components/ui/button";
+import { LogoMark } from "@/components/ui/logo-mark";
 
 const SCROLL_THRESHOLD = 8;
 
@@ -70,8 +71,12 @@ export function Navbar() {
       <Container className="flex h-16 items-center justify-between lg:h-20">
         <Link
           href="/"
-          className={cn("rounded-sm text-base font-semibold tracking-tight text-brand-foreground lg:text-lg", FOCUS_RING)}
+          className={cn(
+            "flex items-center gap-2 rounded-sm text-base font-semibold tracking-tight text-brand-foreground lg:text-lg",
+            FOCUS_RING,
+          )}
         >
+          <LogoMark size={28} id="nav-logo" />
           {siteConfig.name}
         </Link>
 

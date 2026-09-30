@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { LOGO_ARROW_PATH, LOGO_CENTER_DOT, LOGO_RING_PATH, LOGO_STROKE_WIDTH, LOGO_VIEWBOX } from "@/lib/logo-mark";
 
 /**
  * Shared visual for app/opengraph-image.tsx and app/twitter-image.tsx —
@@ -38,16 +39,11 @@ export function BrandOgImage() {
             backgroundImage: "linear-gradient(135deg, #635bff 0%, #22d3ee 100%)",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              width: "38%",
-              height: "38%",
-              borderRadius: "22%",
-              backgroundColor: "#0b1020",
-              transform: "rotate(45deg)",
-            }}
-          />
+          <svg viewBox={LOGO_VIEWBOX} width="70%" height="70%">
+            <path d={LOGO_RING_PATH} fill="none" stroke="#0b1020" strokeWidth={LOGO_STROKE_WIDTH} strokeLinecap="round" />
+            <path d={LOGO_ARROW_PATH} fill="#0b1020" />
+            <circle cx={LOGO_CENTER_DOT.cx} cy={LOGO_CENTER_DOT.cy} r={LOGO_CENTER_DOT.r} fill="#0b1020" />
+          </svg>
         </div>
         <span style={{ fontSize: 30, fontWeight: 700, color: "#f8fafc" }}>{siteConfig.name}</span>
       </div>

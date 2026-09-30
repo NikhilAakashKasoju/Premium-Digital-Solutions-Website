@@ -6,6 +6,7 @@ import { cn, FOCUS_RING_ON_SECONDARY } from "@/lib/utils";
 import { Container } from "@/components/layout/container";
 import { NavLinks } from "@/components/layout/nav-links";
 import { InstagramIcon, LinkedinIcon, YoutubeIcon } from "@/components/icons/brand-icons";
+import { LogoMark } from "@/components/ui/logo-mark";
 
 // Keying by the exact icon-name union (rather than `string`) means this
 // object literal only type-checks if every possible icon has an entry,
@@ -29,9 +30,12 @@ export function Footer() {
       <Container className="py-12 lg:py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div className="max-w-sm">
-            <span className="text-base font-semibold tracking-tight text-brand-foreground">
-              {siteConfig.name}
-            </span>
+            <div className="flex items-center gap-2">
+              <LogoMark size={28} id="footer-logo" />
+              <span className="text-base font-semibold tracking-tight text-brand-foreground">
+                {siteConfig.name}
+              </span>
+            </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-muted">{siteConfig.description}</p>
 
             <nav aria-label="Social media" className="mt-6 flex items-center gap-4">
